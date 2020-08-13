@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h3>可以使用对象来判断样式是否存在</h3>
+        <div :class='{classA:ok}'></div>
+        <h3>可以使用数组来定义多个样式</h3>
+        <div :class='[a,b,c]'></div>  
+        <h3>可以使用三目运算</h3>
+        <div :class='ok?"classB":"classC"'></div>  
+        <div :style='sty'></div>
+    </div>
+
+
+    <script src="../vue.js"></script>
+    <script>
+        new Vue({
+            el:"#app",
+            data:{
+                ok:false,
+                a:'aa',
+                b:'bb',
+                c:"cc",
+                // sty:"background:red;height:100px;"
+                sty:{
+                    background:"blue",
+                    height:'100px'
+                }
+            },
+            methods: {
+                
+            }
+        })
+
+
+
+    </script>
+</body>
+</html>

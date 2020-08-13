@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id='app'>
+        <button @click='add($event)'>点击</button>
+        点击了{{num}}次
+        <div>
+            当前时间:{{now}}
+        </div>
+        {{getTime}}
+        <div>
+            <button @click='fall'>降温</button>
+            <button @click='rise'>升温</button>
+            <h3>当前温度:{{temp}}</h3>
+            穿着建议: 当前气温{{feel}},建议穿{{clothes}}
+        </div>
+    </div>
+    <script src='../vue.js'></script>
+    <script>
+        new Vue({
+            el: '#app',
+            // data里的属性和computed属性名不能一样
+            data: {
+                num:0,
+                now:null,
+                temperature:20
+            },
+            methods: {
+                add(e){
+                    // console.log(e)
+                    this.now=new Date()
+                    this.num++
+                },
+                rise(){
+                    this.temperature++
+                },
+                fall(){
+                    this.temperature--
+                }
+            },
+            computed: {
+                // computed的名称不能与data的属性名重复
+                getTime(){
+                    // computed没有依赖的值就不会刷新
+                    console.log(this.num) //依赖了就会刷新
+                    return new Date()
+                },
+                temp(){
+                    return this.temperature+'℃'
+                },
+                feel(){
+                    if(this.temperature>30){
+                        return '炎热'
+                    }
+                    if(this.temperature>10){
+                        return '适宜'
+                    }
+                        return '偏冷'
+                },
+                clothes(){
+                    if(this.temperature>30){
+                        return '短袖'
+                    }
+                    if(this.temperature>10){
+                        return '春秋衫'
+                    }
+                        return '羊毛衫'
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>

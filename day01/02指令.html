@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 先编译再执行，就不会弹出{{msg}} -->
+    <!-- <script src="../vue.js"></script> -->
+</head>
+<body>
+    <div id="app">
+        <!-- 指令：出错时{{msg}}信息不会显示在页面上 -->
+        <div v-text='msg'></div>
+        <div v-html='msg'></div>
+        <ul>
+            <li>v-if / v-show</li>
+            <li>
+                <button @click='toggle'>toggle</button>
+            </li>
+            <!-- v-if值为true就显示到页面中，为false不显示 节点为空-->
+            <li v-if='show'>这是v-if</li>
+            <!-- v-show为true显示，false隐藏，但是节点在页面里 -->
+            <li v-show='show'>这是v-show</li>
+
+            <!-- v-else 要配合v-if使用 ：true显示if false显示else -->
+            <!-- 多条件用v-elseif -->
+            <li v-if='show'>v-if</li>
+            <li v-else>v-else</li>
+
+            <li><h1>v-for遍历</h1></li>
+            <li v-for='(item,index) in fruits'>
+                {{ `${index}----${item}` }}
+            </li>
+            <li>
+                <h4>{{num}}</h4>
+                <button v-on:click='add'>+</button>
+                <button @click='reduce'>-</button>
+            </li>
+
+        </ul>
+    </div>
+
+    <script src="../vue.js"></script>
+    <script>
+        let vm=new Vue({
+            el:"#app",
+            data:{
+                msg:"<h1>this is data 的 msg<h1>",
+                show:false,
+                fruits:[
+                    'apple','pear','banana','pineapple','orange','strawberry'
+                ],
+                num:0
+            },
+            methods: {
+                add(){
+                  console.log(this);//指向vue, vm指向vue，可以直接this调用num
+                  this.num++;  
+                },
+                reduce(){
+                    this.num--;
+                },
+                toggle(){
+                    this.show=!this.show;//取反
+                }
+            },
+
+        })
+
+
+    </script>
+</body>
+</html>

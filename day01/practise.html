@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .imgs{
+           width: 10%;
+        }
+        .classA{
+            width: 10px;
+            height: 10px;
+            color: red;
+        }
+        
+    </style>
+</head>
+<body>
+    <div id="app">
+        <ul>
+            <li v-text='msg'></li>
+            <li><button @click='toggle'>toggole</button></li>
+            <li v-show='show'>v-show</li>
+            <li v-if='show'>if</li>
+            <li v-else='show'>else</li>
+            <li v-for='val in stu'>{{`学号:${val.id} 姓名:${val.name} 年龄:${val.age}`}}</li>
+        </ul>
+        <img :src="path" alt="" @click='change' :class='cla'>
+
+        <div :class='{classA:true}'></div>
+
+        省份：
+        <select v-model='pro'>
+            <option :value="i" v-for='(v,i) in pros'>{{v}}</option>
+        </select>
+        城市：
+        <select v-model='city'>
+            <option :value="i" v-for='(v,i) in citys[pro]'>{{v}}</option>
+        </select>
+
+    </div>
+
+
+    <script src="../vue.js"></script>
+    <script>
+        new Vue({
+            el:"#app",
+            data:{
+                msg:"你是猪",
+                show:false,
+                stu:[
+                    {id:"101",name:"张",age:"18"},
+                    {id:"102",name:"李",age:"19"}
+                ],
+                path:'eason.jpg',
+                cla:"imgs", 
+                pro:0,
+                city:0,
+                pros:[
+                    '江苏','山东','安徽','浙江','湖北'
+                ],
+                citys:[
+                    ['南京','徐州','苏州','泰州','扬州'],
+                    ['济南','日照','青岛','潍坊','莱芜'],
+                    ['合肥','六安','滁州','黄山','芜湖'],
+                    ['宁波','杭州','温州','金华','义乌'],
+                    ['武汉','黄冈','荆门','宜昌','黄石']
+                ]
+            },
+            methods: {
+                toggle(){
+                    this.show=!this.show
+                },
+                change(){
+                    this.path=this.path=='eason.jpg'?"timg.jpg":"eason.jpg"
+                }
+            },
+
+
+        })
+
+
+
+    </script>
+</body>
+</html>

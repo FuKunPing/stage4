@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <button @click="add">增加</button>
+    <h2>num值: {{ num }} </h2>
+    <button @click="add2">修改obj</button>
+    <h2>
+      obj的属性：a==> {{obj.a}}; b==> {{obj.b}}
+    </h2>
+    <button @click='add3'>修改数组</button>
+    <h2>
+        arr:{{arr}}
+    </h2>
+  </div>
+  <script src="../vue.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        num: 0,
+        obj: {
+          a: 1, b: 2
+        },
+        arr:[1,2,3]
+      },
+      methods:{
+        add3(){
+            // this.arr.push(0)
+            // this.arr.shift()
+            this.arr[0]=this.arr[0]+1
+        },
+        add2(){
+          this.obj.a++
+        },
+        add(){
+          this.num++
+        }
+      },
+      watch: {
+        //   监听数组的变化
+        arr:{
+            // 监听不到数组通过下标修改的结果
+            handler(val){
+                console.log(val)
+            }
+        },
+        // 监听obj的变化(完整模式)
+        obj:{
+          handler(newVal,oldVal){
+            console.log(newVal)
+          },
+          // 开启深度监听
+          deep: true,
+          // 是否立即监听
+          immediate: true
+        },
+        // 监听num数据
+        num(newVal,oldVal){
+          // 当num达到5 的时候，将其重置
+          if(newVal>=5){
+            this.num = 0
+          }
+          // console.log('num发生了变化',this.num)
+          // console.log(`修改后的值为${newVal},修改之前的值为${oldVal}`)
+        }
+      }
+    })
+  </script>
+</body>
+</html>

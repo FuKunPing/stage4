@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <!-- v-model相当于value，只能在有value属性的标签里使用-->
+        <input type="text" v-model='msg1'>
+        <h3>{{msg1}}</h3>
+        <!-- <table v-model='msg1'></table> -->
+        <h1>单选框</h1>
+        <label>
+            <input type="radio" v-model='gender' name="gender" value="M">男
+        </label>
+        <label>
+            <input type="radio" v-model='gender' name="gender" value="F">女
+        </label>
+        <h3>性别: {{gender==''?'未选择':gender=="M"?'男':"女"}}</h3>
+
+        <h1>多选框</h1>
+        <label>
+            <input type="checkbox" value="football" name="tiyuyundong" v-model='sports'>足球
+        </label>
+        <label>
+            <input type="checkbox" value="basketball" name="tiyuyundong" v-model='sports'>蓝球
+        </label>
+        <label>
+            <input type="checkbox" value="volleyball" name="tiyuyundong" v-model='sports'>排球
+        </label>
+        <label>
+            <input type="checkbox" value="pingpong" name="tiyuyundong" v-model='sports'>乒乓球
+        </label>
+        <h3>体育运动:{{sports}}</h3>
+        <h1>下拉菜单</h1>
+        <select v-model='choose'>
+            <option value="1">111</option>
+            <option value="2">222</option>
+            <option value="3">333</option>
+            <option value="4">444</option>
+        </select>
+        <h3>你选择的是:{{choose}}</h3>
+    </div>
+
+
+    <script src="../vue.js"></script>
+    <script>
+        new Vue({
+            el:"#app",
+            data:{
+                msg1:"",
+                gender:'',
+                sports:[],
+                choose:1
+            },
+            methods: {
+                
+            },
+        });
+
+    </script>
+</body>
+</html>

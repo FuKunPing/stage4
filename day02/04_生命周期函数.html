@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id='app'>
+        <h3>
+            num:{{num}}
+        </h3>
+        <button @click='destroy'>销毁</button>
+    </div>
+    <button onclick="vm.$destroy()">外面的销毁</button>
+    <script src='../vue.js'></script>
+    <script>
+        let vm=new Vue({
+            el: '#app',
+            data: {
+                num:100
+            },
+            methods: {
+                destroy(){
+                    this.$destroy()
+                },
+            },
+            beforeCreate() {
+                console.log('-----创建之前------');
+                // console.log(this);//vue
+                console.log(document.getElementById('app'))
+            },
+            created() {
+                console.log('-----创建之后------');
+                // console.log(this);//vue
+                console.log(document.getElementById('app'))
+            },
+            beforeMount() {
+                // 挂载之前页面都没有num
+                console.log('-----挂载之前------');
+                console.log(document.getElementById('app'))
+            },
+            mounted() {
+                // 挂载之后，实例替换了原来的标签
+                console.log('-----挂载之后------');
+                console.log(document.getElementById('app'))
+            },
+            beforeUpdate() {
+                console.log('-----更新之前------');
+                console.log(document.getElementById('app').innerText)
+            },
+            updated() {
+                console.log('-----更新之后------');
+                console.log(document.getElementById('app').innerText)
+            },
+            beforeDestroy() {
+                console.log('-----销毁之前------');
+                console.log(document.getElementById('app'))
+            },
+            destroyed() {
+                console.log('-----销毁之后------');
+                console.log(document.getElementById('app'))
+            },
+        })
+    </script>
+</body>
+
+</html>

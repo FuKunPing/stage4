@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id='app'>
+        省份：
+        <select v-model='index'>
+            <option :value="i" v-for='(p,i) in pros'>{{p}}</option>
+        </select>
+        城市:
+        <select>
+            <option :value="i" v-for='(c,i) in citys2'>{{c}}</option>
+        </select>
+    </div>
+    <script src='../vue.js'></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                pros:['江苏','山东','安徽','浙江','湖北'],
+                index:0,
+            },
+            methods: {},
+            computed: {
+                citys2(){
+                    // 依赖某个省份,根据发生的变化返回不同的结果
+                    if(this.index==0){
+                        return ['南京','徐州','苏州','泰州','扬州'];
+                    }
+                    if(this.index==1){
+                        return ['济南','日照','青岛','潍坊','莱芜'];
+                    }
+                    if(this.index==2){
+                        return ['合肥','六安','滁州','黄山','芜湖'];
+                    }
+                    if(this.index==3){
+                        return ['宁波','杭州','温州','金华','义乌']
+                    }
+                    if(this.index==4){
+                        return ['武汉','黄冈','荆门','宜昌','黄石']
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

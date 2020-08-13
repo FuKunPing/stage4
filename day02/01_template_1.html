@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Document</title>
+</head>
+<body>
+    <div id='app'>
+        <h1>模板</h1>
+    </div>
+    <script src='../vue.js'></script>
+    <script>
+        new Vue({ 
+            el: '#app', 
+            data: {
+                baidu:'百度一下，你就知道',
+                path:"http://www.baidu.com",
+                color:'color:red'
+            }, 
+            methods: {
+
+            }, 
+            template:`
+            <a :href='path' :style='color'>{{baidu}}</a>
+            `
+        })
+        
+    </script>
+</body>
+
+</html>

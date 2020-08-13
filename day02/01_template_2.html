@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Document</title>
+    <style>
+        .classA{
+            height: 200px;
+            background-color: #ccc;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='app'>
+
+    </div>
+    <template id="temp">
+        <div>
+            <div :class="red">{{msg}}</div>
+        </div>
+    </template>
+    <script src='../vue.js'></script>
+    <script>
+        new Vue({ 
+            el: '#app', 
+            data: {
+                msg:'这是template定义的模板',
+                red:"classA"
+            }, 
+            methods: {},
+            template:'#temp' 
+            })
+    </script>
+</body>
+
+</html>

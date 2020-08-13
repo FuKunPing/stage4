@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .classA{
+            background-color: rgb(211, 240, 211);
+        }
+        .classB{
+            background-color: rgb(207, 246, 246);
+        }
+    </style>
+</head>
+<body>
+    <div id="stu">
+    <table border="1" cellpadding='10'>
+        <tr>
+            <td>学号</td>
+            <td>姓名</td>
+            <td>性别</td>
+        </tr>
+        <!-- <tr v-for='stu in stus'>
+        <td v-text='stu.id'></td>
+        <td v-text='stu.name'></td>
+        <td v-text='stu.gender'></td>
+        </tr> -->
+
+        <!-- 对象的形式 -->
+        <!-- <tr v-for='(stu,i) in stus' :class='{classA:true,classB:i%2==1}'> -->                                                                                                                                                                    
+        <!-- 三目运算 -->
+        <tr v-for='(stu,i) in stus' :class='i%2==1?"classA":"classB"'>
+        <td>{{stu.id}}</td>
+        <td>{{stu.name}}</td>
+        <td>{{stu.gender=='F'?"女":"男"}}</td>
+        </tr>
+        <!-- 数据结构方式 -->
+        <!-- <tr v-for='{id,name,gender} in stus'>
+        <td>{{id}}</td>
+        <td>{{name}}</td>
+        <td>{{gender}}</td>
+        </tr> -->
+    </table>
+    <button @click='sort'>点击排序</button>
+</div>
+
+    <script src="../vue.js"></script>
+    <script>
+        new Vue({
+            el:"#stu",
+            data:{
+                stus:[
+                    {id:1,name:'张三',gender:'M'},
+                    {id:2,name:'李丽',gender:'F'},
+                    {id:3,name:'王磊',gender:'M'},
+                    {id:4,name:'张苗',gender:'F'},
+                    {id:5,name:'王浩',gender:'M'},
+                ],
+                f:true
+            },
+            methods: {
+                sort(){
+                    this.f = !this.f;
+                    if(this.f){
+                        this.stus.sort((a,b)=>{
+                        return a.gender.charCodeAt(0) - b.gender.charCodeAt(0)
+                    })
+                    }else{
+                        this.stus.sort((a,b)=>{
+                        return a.id - b.id
+                    })
+                    }
+        }
+            },
+
+        })
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+1.Vue的构造器
+    构造器中的选项： el,data,methods
+
+    template(模板)
+        Vue中的模板声明了数据和最终展现给用户的DOM之间的关系，直接替换原节点
+        模板的定义有3种方式：
+            1) 直接定义在选项中（必须要有一个根节点）
+            2) 定义在template标签中
+            3) 定义在script标签中
+
+    computed选项
+        计算属性
+            1) 当依赖的值发生变化时,会触发计算属性重新计算
+            2) 数据如果没有发生变化，则计算属性不会在视图更新时执行，因为计算属性会缓存计算过后的值
+        何时使用计算属性：
+            当数据需要被计算得到一个新的值的时候，就可以使用computed，这样可以节省性能耗损
+
+    watch选项
+        监听数据的状态变化
+
+        computed和watch的区别
+        1.computed是根据依赖的值的变化计算得出新的状态，计算得到的值需要挂载到Vue实例上
+        而watch是监听已经存在的状态，所以watch也可以监听computed的属性变化(data,computed)
+        2.computed计算得到的值具有缓冲性，当依赖发送变化时，才会去计算新的状态，watch是当
+        数据发生变化，才会执行
+        3.从适用场景来说
+            computed适用于一个数据受多个数据影响的场景
+            watch适用于一个数据影响多个数据的场景
+            computed用于同步数据的处理
+            watch可以处理异步数据以及复杂的逻辑
+
+    生命周期函数(钩子函数 hook)
+        1.beforeCreate 创建vue实例之前
+        2.created vue实例创建后
+        3.beforeMount 实例挂载到DOM之前
+        4.mounted 实例挂载后
+        5.beforeUpdate 更新前
+        6.updated 更新后
+    --------------------------------
+        7.beforeDestory 销毁之前
+        8.destroyed 销毁之后
+
+
+
+练习01(lianxi01.html)
+    点击按钮，更新当前时间
+
+练习02(lianxi02.html)
+    当温度大于20时，提示穿短袖
+    在10-20之间，提示穿长袖
+    低于10，提示穿毛衣
+
+练习03
+    使用watch或computed实现省内联动
+
+
+

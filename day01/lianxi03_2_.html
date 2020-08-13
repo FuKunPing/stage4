@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <div>
+          <input type="text" v-model="msg">
+          <button @click="add">添加</button>
+        </div>
+        <div>
+          <table>
+            <thead>
+              <tr>
+                <th>编号</th>
+                <th>名称</th>
+                <th>单价</th>
+                <th>数量</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(p,i) in products">
+                <td>{{ p[0] }}</td>
+                <td>{{ p[1] }}</td>
+                <td>{{ p[2] }}</td>
+                <td>{{ p[3] }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    <script src='../vue.js'></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                msg:'',
+                products:[]
+            },
+            methods: {
+                add(){
+                    let arr=this.msg.split(' ');
+                    let f=false;//假设不同
+                    let k=-1;//下标
+                    this.products.forEach((val,i)=>{
+                        if(val[1]==arr[1]){
+                            f=true;
+                            k=i;
+                            val[3]=(val[3]-0)+(arr[3]-0);
+                        }
+                    })
+                    if(f){
+                        arr=this.products.splice(k,1)[0]
+                    }
+                    this.products.unshift(arr);
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>

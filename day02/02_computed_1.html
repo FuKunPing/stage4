@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id='app'>
+        <!-- 转换成数字  失去焦点-->
+        <input type="text" v-model.number.lazy="score">
+        <!-- 过滤首尾空格 -->
+        <!-- <input type="text" v-model.trim="score"> -->
+        <button @click='add'>点击</button>
+        <h1>
+            <!-- 你的等第是:{{score>=90?'优秀':score>=80?'良好':score>=60?'及格':'不及格'}} -->
+
+            <!-- num值发生变化时会重新渲染页面，调用show -->
+            num的值：{{num}} <br> 
+            你的等第是:{{level}}
+        </h1>
+        <h1>调用methods中的show方法: {{show()}}</h1>
+    </div>
+    <script src='../vue.js'></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                score:0,
+                num:0
+            },
+            methods: {
+                show(){
+                    console.log('show方法')
+                },
+                add(){
+                    this.num++
+                }
+            },
+            computed: { 
+                level(){
+                    //level的结果依赖于this.score
+                    // 当this.score发生变化时，就会触发level重新计算
+                    console.log('computed')
+                    return this.score>=90?'优秀':this.score>=80?'良好':this.score>=60?'及格':'不及格'
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>

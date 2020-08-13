@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id='app'>
+
+    </div>
+    <script type="text/template" id="temp">
+        <div>
+            <h1>{{msg}}</h1>
+        </div>
+    </script>
+
+    <script src='../vue.js'></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                msg: "script标签定义的template"
+            },
+            methods: {},
+            template: "#temp"
+        })
+    </script>
+</body>
+
+</html>

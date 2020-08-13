@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .out{
+            width: 400px;
+            height: 400px;
+            background: rgb(135, 173, 199);
+        }
+        .inner{
+            width: 200px;
+            height: 200px;
+            background: rgb(195, 227, 231);
+        }
+        .style_red{
+            border: 1px solid red;
+            height: 50px;
+        }
+
+
+
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!--  只当事件是从侦听器绑定的元素本身触发时才触发回调。 -->
+        <div class="out" @click.self='c1'>
+            <!-- 阻止冒泡 -->
+            <div class="inner" @click.stop='c2'> 
+            </div>
+        </div>
+        <!-- 阻止原来效果,阻止默认行为 不跳转到百度 -->
+        <a href="http://www.baidu.com" @click.prevent='c1'>xxx</a>
+        <!-- 失去焦点 -->
+        <input type="text " @blur='show'>
+        <div>
+            <h3>v-bind</h3>
+            <button @click='load'>加载图片</button>
+            <!-- <img :src="path" alt="" width="100px"> -->
+            <img v-bind:src="path" alt="" width="100px" @click='change'>
+            <div :class='red'></div>
+            <a :href="baidu">百度</a>
+        </div>
+    </div>
+
+    <script src="../vue.js"></script>
+    <script>
+        new Vue({
+            el:"#app",
+            data:{
+                path:"timg.jpg",
+                red:'style_red', //style_red是类名
+                baidu:'http://www.baidu.com'
+            },
+            methods: {
+                c1(){
+                    alert("这是c1")
+                },
+                c2(){
+                    alert("this is c2")
+                },
+                show(){
+                    alert("触发了blur")
+                },
+                load(){
+                    alert("开始加载图片");
+                    setTimeout(()=>{
+                        this.path='timg.jpg';
+                    },2000)
+                },
+                change(){
+                    this.path=this.path=='timg.jpg'?'eason.jpg':'timg.jpg'
+                }
+            },
+        })
+
+
+    </script>
+</body>
+</html>
