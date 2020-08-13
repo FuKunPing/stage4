@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id='app'>
+        编号: 
+        <select v-model='index'>
+            <option v-for='(v,i) in id' :value="i">{{v}}</option>
+        </select>
+        名称:
+        <select v-model='index'>
+            <option v-for='(v,i) in name' :value="i">{{v}}</option>
+        </select>
+        单价:
+        <select v-model='index'>
+            <option v-for='(v,i) in price' :value="i">{{v}}</option>
+        </select>
+        数量:
+        <!-- <select v-model='index'>
+            <option v-for='(v,i) in count' :value="i">{{v}}</option>
+        </select> -->
+        <input type="text" v-model='num'>
+        <button @click='add'>添加</button>
+        <table>
+            <tr>
+                <td>编号</td>
+                <td>名称</td>
+                <td>单价</td>
+                <td>数量</td>
+                <td>操作</td>
+            </tr>
+            <tr v-for='(v,i) in products'>
+                <td>{{v.id}}</td>
+                <td>{{v.name}}</td>
+                <td>{{v.price}}</td>
+                <td>{{v.count}}</td>
+                <td><a href="" @click='del(i)'>删除</a></td>
+            </tr>
+        </table>
+    </div>
+    <script src='../vue.js'></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                index:0,
+                id:[1,2,3,4,5],
+                name:['vivo','oppo','apple','huawei','xiaomi'],
+                price:[1000,2000,3000,4000,5000],
+                // count:[100,200,300,400,500],
+                products:[],
+                num:1
+            },
+            methods: {
+                add(){
+                    let obj={
+                        id:this.id[this.index],
+                        name:this.name[this.index],
+                        price:this.price[this.index],
+                        count:this.num
+                    };
+                    let f=false;
+                    let k=-1;
+                    for(let i=0;i<this.products.length;i++){
+                        let o=this.products[i];
+                        if(o.name==obj.name){
+                            f=true;
+                            k=i;
+                            o.count=(o.count-0)+(obj.count-0);
+                        }
+                    }
+                    if(!f){
+                       this.products.push(obj); 
+                    }   
+                },
+                del(k){
+                    this.products.splice(k,1)
+                }
+            },
+            watch: {
+                index:{
+                    handler(val){
+
+                    }
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>
