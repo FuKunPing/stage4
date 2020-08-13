@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+      <button @click='add1'>修改arr</button>
+      <h2>arr:{{arr}}</h2>
+
+      <button @click='add2'>修改obj</button>
+      <h2>obj:a==>{{obj.a}} b==>{{obj.b}}</h2>
+
+      <button @click='add3'>增加</button>
+      <h2>{{num}}</h2>
+
+  </div>
+
+  <script src="../vue.js"></script>
+  <script>
+    new Vue({
+       el:"#app",
+       data:{
+           arr:[1,2,3],
+           obj:{a:1,b:2},
+           num:0
+       },
+       methods:{
+        add3(){
+            this.num++
+        },
+        add2(){
+            this.obj.a++;
+            this.obj.b--;
+        },
+        add1(){
+            // this.arr[0]=this.arr[0]+1
+        }
+       },
+       watch: {
+            num(newVal,oldVal){
+                console.log(`新值为${newVal}`);
+                console.log(`旧值为${oldVal}`)
+            }
+       },
+    })
+  </script>
+</body>
+</html>

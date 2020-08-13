@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <input type="text" v-model='score'>
+    <button @click='add'>点击</button>
+    <h3>
+        score:{{score}}
+        num:{{num}}
+    </h3>
+    <h3>{{level}}</h3>
+  </div>
+
+  <script src="../vue.js"></script>
+  <script>
+    new Vue({
+       el:"#app",
+       data:{
+            score:0,
+            num:0
+       },
+       methods:{
+            add(){
+                this.score++;
+                this.num++
+            }
+       },
+       computed:{
+           level(){
+            //computed依赖score,所以当score的值发生改变时，页面会刷新
+            return this.score>80?'优秀':this.score>60?'及格':"不及格"
+           }
+       },
+    })
+  </script>
+</body>
+</html>
