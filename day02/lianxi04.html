@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    编号：
+    <select v-model="idx">
+      <option v-for="({pid},index) in pros" :value="index">
+        {{pid}}
+      </option>
+    </select>
+    名称：
+    <select v-model="idx">
+      <option v-for="({pname},index) in pros" :value="index">
+        {{pname}}
+      </option>
+    </select>
+    单价：
+    <span>{{ price }}</span>
+    库存：
+    <input type="number" v-model.number="count">
+    <button @click="add">进货</button>
+    <table cellspacing='0' width=50% border="1">
+      <tr>
+        <td>编号</td>
+        <td>名称</td>
+        <td>单价</td>
+        <td>库存</td>
+      </tr>
+      <tr v-for="p in reponstory">
+        <td>{{p.pid}}</td>
+        <td>{{p.pname}}</td>
+        <td>{{p.price}}</td>
+        <td>{{p.count}}</td>
+      </tr>
+    </table>
+  </div>
+  <script src="../vue.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        count: 10,
+        idx: 0,
+        reponstory: [], // 库存数据
+        // 货架上的数据
+        pros : [
+          {pid:1,pname:"华为",price:3000},
+          {pid:2,pname:"小米",price:2000},
+          {pid:3,pname:"黑鲨",price:1500},
+        ]
+      },
+      computed: {
+        price(){
+          return this.pros[this.idx].price
+        }
+      },
+      methods:{
+        add(){
+          // 获取添加的数据的编号,名称,单价
+          let {pid,pname,price,count=0} = this.pros[this.idx]; 
+          // 判断库存中有没有该商品
+          let f = this.reponstory.findIndex((val,idx)=>{
+            return val.pname==pname;
+          })
+          // console.log(f)
+          if(f==-1){ // 没找到
+            let obj = {
+              pid,pname,price,count:this.count
+            }
+            this.reponstory.unshift(obj)
+          }else{ // 找了，修改count值
+            this.reponstory[f].count = this.count + this.reponstory[f].count
+          }
+        }
+      }
+    })
+  </script>
+</body>
+</html>

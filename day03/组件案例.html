@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<!-- <script src='https://cdn.jsdelivr.net/npm/vue'></script> -->
+	<style>
+		.demo1 {
+		  margin-left:200px;
+		}  
+		.clearFix:before,
+		.clearFix:after {
+			display: table;
+			content: '';
+		}
+		.clearFix:after {
+			clear: both;
+		}
+		.search {
+			width: 320px;
+			max-height: 300px;
+			border-radius: 20px;
+			background: #ddd;
+		}
+		.s_box {
+			width: 300px;
+			margin: 10px auto;
+		}
+		.keyWord {
+			width: 230px;
+			height: 30px;
+			border-radius: 15px;
+			outline: none;
+			border: none;
+			font-size: 18px;
+			padding-left: 10px;
+		}
+		.go {
+			border-radius: 15px;
+			outline: none;
+			width: 50px;
+			height: 30px;
+			border: none;
+			background: #e4393c;
+		}
+		.listNode {
+			list-style: none;
+			padding: 0;
+			margin: 10px auto;
+			width: 300px;
+		}
+		.listNode li {
+			padding-left: 20px;
+			color: #555;
+			line-height: 30px;
+			cursor: pointer;
+		}
+		.listNode li:hover {
+			background: #BDBCBC;
+		}
+		.style_a {
+			background: #999;
+			cursor: pointer;
+		}
+	</style>
+</head>
+<body>
+	<div id="app"></div>
+		<SearchBox></SearchBox>
+	<script src="../vue.js"></script>
+	<script>
+		/* 
+		全局注册一个组件SearchBox
+		将ul拆成一个子组件li-list
+			id=temp01放在父组件中
+			ul放在子组件中
+		SearchBox中的data定义数据
+		listArr:[...]
+		在SearchBox组件调用li-list组件时，将数据传递给子组件
+		点击输入框，实现子组件显示或隐藏的切换
+		点击子组件的li，将内容传递给父组件显示在文本框中
+		*/
+		Vue.component('SearchBox',{
+			data() {
+				return {
+					show:false,
+					str:'',
+					listArr: [
+						"HTML5+CSS3",
+						"JavaScript",
+						"Angular.js",
+						"Vue.js",
+						"React.js",
+						"Node.js",
+						"React-Native"
+					]
+				}
+			},
+			methods: {
+				toggle(){
+					this.show=!this.show
+				},
+				receive(d){
+					// console.log("父组件",d);
+					this.str=d;
+
+				}
+
+			},
+			template: `
+			<div id='temp01'>
+				<div class='demo1'>
+					<div class='search clearFix'>
+						<div class='clearFix s_box'>
+							<input type="text" class='keyWord' @click='toggle' v-model='str'>
+							<input type="button" value='GO' class='go'>
+						</div>
+						<li-list :lists='listArr' v-show='show' @toFather='receive'/>
+					</div>
+				</div>
+			</div>
+			`,
+			components:{
+				'li-list':{
+					props:{
+						lists:{
+							type:Array,
+							default(){
+								return []
+							}
+						}
+					},
+					methods: {
+						send(d){
+							// console.log(d)
+							// 把点击的数据传给父组件
+							this.$emit('toFather',d)
+						}
+					},
+					template:`
+					<ul class='listNode'>
+						<li v-for='list in lists' @click='send(list)'>{{list}}</li>
+					</ul>
+					`
+				}
+			}
+		})
+
+		// 创建vue实例
+		new Vue({
+			el: '#app',
+			data:{},
+			template: `
+				<div>
+					<SearchBox />
+				</div>
+			`
+		})
+	</script>
+</body>
+</html>

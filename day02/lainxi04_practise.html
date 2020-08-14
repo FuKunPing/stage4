@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id='app'>
+        编号：
+        <select v-model='idx'>
+            <option v-for='({id},index) in pros' :value="index">{{id}}</option>
+        </select>
+        名称：
+        <select v-model='idx'>
+            <option v-for='({name},index) in pros' :value="index">{{name}}</option>
+        </select>
+        单价：
+        <span>{{price}}</span>
+        库存：
+        <input type="text" v-model.number='count'>
+        <button @click='add'>进货</button>
+        <table cellspacing='0' width=50% border="1">
+            <tr>
+              <td>编号</td>
+              <td>名称</td>
+              <td>单价</td>
+              <td>库存</td>
+            </tr>
+            <tr v-for='p in respon'>
+                <td>{{p.id}}</td>
+                <td>{{p.name}}</td>
+                <td>{{p.price}}</td>
+                <td>{{p.count}}</td>
+            </tr>
+          </table>
+    </div>
+    <script src='../vue.js'></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                idx:0,
+                count:10,
+                // 货架数据，不需要count，进货的时候从输入框获取
+                pros:[
+                    {id:1,name:'huawei',price:3000},
+                    {id:2,name:'oppo',price:2000},
+                    {id:3,name:'vivo',price:2500},
+                    {id:4,name:'apple',price:5000},
+                ],
+                // 库存的数据
+                respon:[]
+            },
+            methods: {
+                add(){
+                    // 获取当前下标的那条数据，取出来
+                    let {id,name,price,count}=this.pros[this.idx];
+                    // 判断库存中有没有该商品 findIndex(查找数组里有没有，返回下标)
+                    let f=this.respon.findIndex((val,index)=>{
+                        // 库存里有数据就继续判断，没有就不执行判断
+                        return  val.name && val.name==name 
+                    });
+                    if(f==-1){
+                        // 没找到就放进respon
+                        let obj={
+                            id:id,
+                            name:name,
+                            price:price,
+                            count:this.count
+                        }
+                        this.respon.unshift(obj);
+                    }else{
+                        // f是找到的那条数据的下标，修改count
+                        this.respon[f].count+=this.count
+                    }
+                }
+            },
+            computed: {
+                price(){
+                    return this.pros[this.idx].price
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>

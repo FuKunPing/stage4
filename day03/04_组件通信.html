@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id='app'>
+        <!-- :name 绑定的是props里定义的name -->
+        <my-com :name='fname' :age='fage' @senddata='receive'></my-com>
+    </div>
+    <script src='../vue.js'></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                fname:"father",
+                fage:50
+            },
+            methods: {
+                receive(...a){
+                    console.log(a)
+                }
+            },
+            components:{
+                'my-com':{
+                    // props:["name",'age'],
+                    props:{
+                        name:String,
+                        age:{
+                            type:Number,
+                            default:0,
+                            required:true,
+                        },
+                        /* hobbies:{
+                            type:Array | Object,
+                            // 如果类型是Object或者Arra，则默认值必须使用函数返回
+                            default:function(){
+                                return [] |{}
+                            }
+                        } */
+                    },
+                    template:`
+                    <div>
+                        <h1>name属性: {{name}}</h1>
+                        <h1>age属性: {{age}}</h1>
+                        <button @click='send'>传给父组件</button>
+                    </div>
+                    `,
+                    methods: {
+                        send(){
+                            // 调用实例对象的$emit方法向父组件派发自定义事件
+                            /* 
+                            第一个参数为自定义事件名称，后续参数为传递的数据
+                             */
+                            this.$emit('senddata',1,2,3,4)
+                        }
+                    },
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

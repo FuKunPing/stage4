@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id='app'>
+        {{obj}}
+        <button @click='add' ref='bb'>xxx</button>
+
+        <div ref="dd">
+            <h1>{{msg1}}</h1>
+        </div>
+    </div>
+    <script src='../vue.js'></script>
+    <script>
+        let vm=new Vue({
+            el: '#app', 
+            data: {
+                msg1:1,
+                msg2:2,
+                msg3:3,
+                obj:{b:10}
+            },
+            methods: {
+                add(){
+                    // this.obj.a=1 //这样点击页面上没有并添加成功
+                    // Vue.set(this.obj,"a",1);
+                    // console.log(this.$refs)
+                    // 当数据发生变化时，不会立即去更新视图
+                    this.msg1++;
+                    // 所以拿到的内容还是数据变化之前的内容
+                    console.log(this.$refs.dd.innerHTML);
+                    // 将回调延迟到DOM更新之后再执行
+                    this.$nextTick(()=>{
+                        console.log(this.$refs.dd.innerHTML); 
+                    })
+                }
+            },
+            watch: {
+                msg1(){
+                 console.log(111)   
+                },
+                msg2(){
+                 console.log(222)   
+                }
+            },
+        })
+        console.log(vm);
+        // vm.msg1拿到一个  vm._data,vm.$data都可以拿到data里的所有变量
+        console.log(vm.msg1);
+        console.log(vm._data);
+        console.log(vm.$data);
+        console.log(vm.$data==vm._data);//true
+        // 可以在外部监听
+        vm.$watch('msg3',function(){
+            console.log(333)
+        });
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<!-- <script src='https://cdn.jsdelivr.net/npm/vue'></script> -->
+	<style>
+		.demo1 {
+		  margin-left:200px;
+		}  
+		.clearFix:before,
+		.clearFix:after {
+			display: table;
+			content: '';
+		}
+		.clearFix:after {
+			clear: both;
+		}
+		.search {
+			width: 320px;
+			max-height: 300px;
+			border-radius: 20px;
+			background: #ddd;
+		}
+		.s_box {
+			width: 300px;
+			margin: 10px auto;
+		}
+		.keyWord {
+			width: 230px;
+			height: 30px;
+			border-radius: 15px;
+			outline: none;
+			border: none;
+			font-size: 18px;
+			padding-left: 10px;
+		}
+		.go {
+			border-radius: 15px;
+			outline: none;
+			width: 50px;
+			height: 30px;
+			border: none;
+			background: #e4393c;
+		}
+		.listNode {
+			list-style: none;
+			padding: 0;
+			margin: 10px auto;
+			width: 300px;
+		}
+		.listNode li {
+			padding-left: 20px;
+			color: #555;
+			line-height: 30px;
+			cursor: pointer;
+		}
+		.listNode li:hover {
+			background: #BDBCBC;
+		}
+		.style_a {
+			background: #999;
+			cursor: pointer;
+		}
+	</style>
+</head>
+<body>
+	<div id='temp01'>
+		<div class='demo1'>
+			<div class='search clearFix'>
+				<div class='clearFix s_box'>
+					<input type="text" class='keyWord' >
+					<input type="button" value='GO' class='go'>
+				</div>
+				<ul class='listNode'>
+					<li>HTML5+CSS3</li>
+					<li>JavaScript</li>
+					<li>Angular.js</li>
+					<li>Vue.js</li>
+					<li>React.js</li>
+					<li>Node.js</li>
+					<li>React-Native</li>
+				</ul>
+			</div>
+	</div>
+</body>
+</html>

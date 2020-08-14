@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>全局组件</h1>
+    <div id='app'>
+        <my-com></my-com>
+        <my-com />
+    </div>
+    <div id="app2"></div>
+    <script src='../vue.js'></script>
+    <script>
+        // 创建一个子类,没有el选项，data必须是函数
+        
+        
+        let Child=Vue.extend({
+            data(){
+                return {
+                    num:1
+                }
+            },
+            watch: {
+                num(newVal){
+                    console.log(newVal)
+                }
+            },
+            template:`
+            <h1>{{num}}</h1>
+            `
+        })
+        
+        // 自定义全局组件
+        /* 
+        参数：第一个表示组件名称，第二个表示组件的内容（可以是已经定义好的组件实例,也可以是含有Vue选项的对象）
+        组件名称：如果是驼峰命名法，则调用的时候可以直接使用，也可以改成以-连接
+                  如果是以-命名的组件，则只能使用-的方式，不能转换成驼峰的方式
+         */
+        //  //含有vue的对象 
+        /* Vue.component('my-com',{
+            data(){
+                return {
+                    num:1
+                }
+            },
+            watch: {
+                num(newVal){
+                    console.log(newVal)
+                }
+            },
+            template:`
+            <h1>{{num}}</h1>
+            `
+        }); */
+        // vue实例
+        Vue.component('MyCom',Child)
+
+        // 方式二：在视图中使用
+        new Vue({
+            el:"#app",
+            data:{num:1},
+            template:`
+            <MyCom />
+            `
+        })
+
+        // 方式一：在template选项里使用
+        /* new Vue({
+            el:"#app",
+            data:{},
+            methods: {},
+            template:`
+            <div>
+                组件的使用：将组件当成标签名来使用
+                <my-com />
+                <my-com></my-com>
+            </div>
+            `
+        }) */
+        
+    
+        // 实例化并挂载到#app上
+        // new Child().$mount('#app');
+        // new Child().$mount('#app2')
+
+    </script>
+</body>
+
+</html>
