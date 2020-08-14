@@ -65,23 +65,86 @@
 	</style>
 </head>
 <body>
-	<div id='temp01'>
-		<div class='demo1'>
+	<div id="app"></div>
+
+	<script src="../vue.js"></script>
+	<script>
+		Vue.component('SearchBox',{
+			data(){
+				return {
+					show:false,
+					str:'',
+					listArr:[
+						"HTML5+CSS3",
+						"JavaScript",
+						"Angular.js",
+						"Vue.js",
+						"React.js",
+						"Node.js",
+						"React-Native"
+					]
+				}
+			},
+			methods: {
+				toggle(){
+					this.show=!this.show 	
+				},
+				receive(i){
+					this.str=i
+				}
+			},
+			template:`
+			<div id='temp01'>
+			<div class='demo1'>
 			<div class='search clearFix'>
 				<div class='clearFix s_box'>
-					<input type="text" class='keyWord' >
+					<input type="text" class='keyWord' @click='toggle' v-model='str'>
 					<input type="button" value='GO' class='go'>
 				</div>
-				<ul class='listNode'>
-					<li>HTML5+CSS3</li>
-					<li>JavaScript</li>
-					<li>Angular.js</li>
-					<li>Vue.js</li>
-					<li>React.js</li>
-					<li>Node.js</li>
-					<li>React-Native</li>
-				</ul>
+				<li-list  :lists='listArr' v-show='show' @toFather='receive'/>
 			</div>
-	</div>
+			</div>
+			</div>
+			`,
+			components:{
+				'li-list':{
+					props:{
+						lists:{
+							type:Array,
+							default(){
+								return []
+							}
+						}
+					},
+					template:`
+					<ul class='listNode'>
+						<li v-for='list in lists' @click='send(list)'>{{list}}</li>
+					</ul>
+					`,
+					methods: {
+						send(i){
+							//i:点击的li的内容
+							// 第一个参数为事件名称，第二个为传递的数据
+							this.$emit('toFather',i)
+						}
+					},
+				}
+			}
+		})
+
+		new Vue({
+			el:'#app',
+			data:{},
+			template:`
+			<div>
+				<SearchBox />
+			</div>
+			`
+		})
+
+
+
+
+	</script>
 </body>
 </html>
