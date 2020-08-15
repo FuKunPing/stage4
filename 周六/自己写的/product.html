@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Document</title>
+    <style>
+        .pros{
+            display: inline-block;
+            width: 12%;
+            margin-left: 80px;
+            border: 1px solid black;
+            text-align: center;
+        }
+        .car{
+            border: 1px solid red;
+            margin:20px 80px;
+            width: 50%;
+        }
+        
+
+    </style>
+</head>
+
+<body>
+    <div id='app'></div> 
+    <script src='../vue.js'></script>
+    <script>
+
+        // vue实例(父组件)
+        new Vue({
+            el: '#app',
+            data: {
+                products : [
+                    {pid:1,pname:"华为",price:3000},
+                    {pid:2,pname:"小米",price:2000},
+                    {pid:3,pname:"黑鲨",price:1500},
+                ]
+            },
+            methods: {},
+            template:`
+            <div>
+                <proList  :pros='products' />
+                <car />
+            </div>
+            `,
+            components:{
+                // 商品列表组件
+                'proList':{
+                    data(){
+                        return {
+                            classA:'pros'
+                        }
+                    },
+                    methods: {
+                        send(i){
+                            // console.log('传递')
+                            console.log(i)
+                            this.$emit('toCar',i);
+                        }
+                    },
+                    props:{
+                        pros:{
+                        type:Array,
+                        default:function(){
+                            return []
+                             }
+                        },
+                    },
+                    template:`
+                    <div>
+                        <div v-for='p in pros' :class='classA' @click='send(p)'>
+                            <p>商品编号: {{p.pid}}</p>
+                            <p>商品名称: {{p.pname}}</p>
+                            <p>商品数量: {{p.price}}</p>
+                        </div>
+                    </div>
+                    `
+                },
+                // 购物车组件
+                'car':{
+                    data(){
+                        return {
+                            values:{},
+                            cars:'car'
+                        }
+                    },
+                    methods: {
+                        receive(i){
+                            console.log('购物车')
+                            this.values=i;
+                        }
+                    },
+                    props:{
+
+                    },
+                    template:`
+                    <div>
+                        <div @toCar='receive' :class='cars'>
+                            <input v-model='values'>
+                        </div>
+                    </div>
+                    `
+                }
+
+            }
+        })
+    </script>
+</body>
+
+</html>
