@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+     #app{
+          width: 70%;
+      }
+      .carts{
+          display: flex;
+          text-align: center;
+          /* flex-wrap: wrap; */
+      }
+      .item{
+          border:1px solid black;
+          background-color: rgb(240, 240, 240);
+          padding: 5px 15px 10px;
+          margin-right: 20px;
+      }
+	  table{
+		  margin-top: 20px;
+		  text-align: center;
+	  }
+
+  </style>
+</head>
+<body>
+  <div id="app">
+        <product :proList='products'></product>
+  </div>
+
+  <script src="../../vue.js"></script>
+  <script>
+    //   两个组件(组件嵌套使用)
+    // 商品信息组件
+    Vue.component('product',{
+        data(){
+            return {
+              // 传给购物车的
+              list:[]
+            }
+        },
+        //从父级拿数据定义props
+        props:{
+          // 接受数据的
+            prolist: {
+			    type: Array,
+			    default(){return []}
+				}
+        },
+        methods:{
+          add(idx){
+            let obj={
+              ...this.prolist[idx],
+              count:1
+            };
+            // this.list.push(obj)
+            //循环判断下面商品数据有没有上面的，有就修改数量，没有再添加进去
+            let i=this.list.findIndex(val=>{
+              return val.name==obj.name;
+            })
+            if(i==-1){
+              // 没有则添加
+              this.list.push(obj)
+            }else{
+              // 找到了就先取购物车数据，再修改,数量加1
+              let o={...this.list[i]}
+              o.count+=1
+              Vue.set(this.list,i,o);
+            }
+            // 点击添加，保存数据到localStorage里
+            localStorage.setItem('list',JSON.stringify(this.list));
+          }
+        },
+        template:`
+        <div>
+          <div class="carts">
+            <div v-for="(p,i) in prolist" class="item">
+            <img :src="p.img" alt="" width="50%">
+            <h4>{{p.name}}</h4>
+            <h5>{{p.price}}</h5>
+            <button @click='add(i)'>添加购物车</button>
+            </div>   
+			    </div>
+          <car :carlist='list'></car>
+        </div>
+        `,
+        // 购物车组件
+        components:{
+          'car':{
+            props:{
+              carlist:Array
+            },
+            created() {
+              // 创建实例后，把数据传给carlist,把字符串转换成对象
+              this.carlist=JSON.parse(localStorage.getItem('list'))
+            },
+            methods: {
+              // 加1减1都重新修改保存localStorage数据
+              add(i){ 
+                this.carlist[i].count++
+                localStorage.setItem('list',JSON.stringify(this.carlist));
+              },
+              reduce(i){
+                // 如果数量大于1 就可以减
+                if(this.carlist[i].count>1){
+                  this.carlist[i].count--
+                  localStorage.setItem('list',JSON.stringify(this.carlist));
+                }
+              }
+            },
+            computed: {
+              // 计算总价，依赖carlist里的值。遍历数组里的数据，
+              total(){
+                let sum=0;
+                // val是一条一条数据
+                this.carlist.forEach(val=>{
+                  sum+=val.count*val.price
+                })
+                // 返回才可以显示数据
+                return sum
+              }
+            },
+            template:`
+            <div>
+              <table width='75%' border='1' cellspacing='0'>
+                <tr>
+                  <td>名称</td>
+                  <td>单价</td>
+                  <td>数量</td>
+                  <td>小计</td>
+                </tr>
+                <tr v-for='(v,i) in carlist'>
+                  <td>{{v.name}}</td>
+                  <td>{{v.price}}</td>
+                  <td>
+                    <button @click='reduce(i)'>-</button>
+                    {{v.count}}
+                    <button @click='add(i)'>+</button>
+                  </td>
+                  <td>{{v.count*v.price}}</td>
+                </tr>
+                <tr>
+								<td colspan="3">总计</td>
+								<td>{{total}}</td>
+							</tr>
+              </table>
+            </div>
+            `
+          }
+        }
+        
+    })
+
+
+
+
+    // 父级
+    new Vue({
+       el:"#app",
+       data:{
+            //  总数据  
+            products: [
+            {img:"../购物车/1.png",name:"小米",price:2000},
+            {img:"../购物车/2.png",name:"华为",price:4500},
+            {img:"../购物车/3.png",name:"苹果",price:6000},
+            {img:"../购物车/4.png",name:"三星",price:5000},
+            {img:"../购物车/5.png",name:"锤子",price:3000},
+            {img:"../购物车/6.png",name:"魅族",price:1200}
+            ]
+       },
+       methods:{},
+    })
+  </script>
+</body>
+</html>

@@ -78,6 +78,7 @@
 					//  修改this.tempCart当前下标的数据。直接下标修改是不会动态显示在页面上的，所以用Vue.set
 					Vue.set(this.tempCart,i,o)
 				}
+				// this.tempCart是对象，对象不好操作，所以转换成字符串
 				localStorage.setItem("carts",JSON.stringify(this.tempCart))
 				
 			}
@@ -106,6 +107,7 @@
 				props:{
 					list:Array	
 				},
+				// vue实例创建后，取local Storage数据，显示在页面上
 				created() {
             		this.list = JSON.parse(localStorage.getItem('carts'))
           		},
@@ -152,8 +154,7 @@
 							</tr>
 							<tr>
 								<td colspan="3">总计</td>
-								<td>{{total}}</td>
-								
+								<td>{{total}}</td>						
 							</tr>
 						</table>
 					</div>

@@ -56,6 +56,7 @@
                         send(i){
                             // console.log('传递')
                             console.log(i)
+                            //  this.$emit是子传给父，父传给子是在props定义一个属性。
                             this.$emit('toCar',i);
                         }
                     },
