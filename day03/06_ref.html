@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id='app'>
+        <button @click='getComp'>xxx</button>
+        <my-com ref="comp"></my-com>
+    </div>
+    <script src='../vue.js'></script>
+    <script>
+        Vue.component('my-com',{
+            data(){
+                return {
+                    msg:'我是全局组件'
+                }
+            },
+            template:`
+            <div>
+                <h1>{{msg}}</h1>
+            </div>
+            `
+        })
+
+        new Vue({
+            el: '#app',
+            data: {},
+            methods: {
+                getComp(){
+                    // console.log(this.$refs.comp.msg);
+                    console.log(this.$refs.comp.$data.msg);
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>
