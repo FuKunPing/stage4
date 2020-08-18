@@ -9,6 +9,8 @@
 
 <script>
 export default {
-    
+    created() {
+        console.log(this.$route.params);//{num: 2}
+    },
 }
 </script>
