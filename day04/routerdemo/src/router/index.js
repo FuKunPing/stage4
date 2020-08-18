@@ -25,7 +25,9 @@ export default new VueRouter({
 		},
 		{
 		path:'/about',
-		component:About
+		components:{
+			default:About
+		}
 		},
 		{
 		path:'/hello',

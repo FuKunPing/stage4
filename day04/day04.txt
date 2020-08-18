@@ -80,7 +80,7 @@ Vue
             }
             父路由中设置导航链接
             <router-link to="/父路由路径/子路由路径"></router-link>
-            同时在父组件中设施router-view
+            同时在父组件中设置router-view
 
 
 练习01
