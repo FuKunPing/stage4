@@ -1,0 +1,14 @@
+小说案例
+    vue ui
+    npm
+    默认
+    把package.json 'serve'改成start (启动npm start)
+    点击添加vue-router，bootstrap(选择不使用babel/)
+
+    动态路由/:id
+    Show组件
+    api(getData.js)
+    novel下载jq: npm i jquery -S
+    stage4下面的node_modules下载got(cnpm i got),如果出错将里面文件全删除，重新cnpm i express got
+
+

@@ -19,7 +19,7 @@
         使用编程式导航，需要借助router对象
         在组件内部，可以通过this.$router访问路由对象(this.$router(new VueRouter出来的)只有一个)
 
-        [下载jquery
+        [下载jquery(在routeDemo下)
         $ npm i jquery --save
         打包
         npm run build
