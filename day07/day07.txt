@@ -1,0 +1,70 @@
+Vuex  状态管理模式
+
+    vue-router,vuex都是Vue官方提供并维护的插件
+
+    什么是vuex？
+        1. vuex是专门为Vue设计的集中式的状态管理模式。
+        2. 把每个组件中共享的状态抽取出来，以全局单例模式去管理。无论在哪个组件中，都可以获取状态或触发行为。
+        3. vuex的核心是store，他包含应用中的大部分state。
+
+    什么时候使用vuex？
+        1. 当项目数据足够多，需要管理的状态足够复杂时
+        2. 多个组件共同依赖同一个状态时
+        3. 多个组件都可能改变同一个状态
+
+    vuex的组成部分：
+        在computed里获取(state,getter)  在methods里获取(mucation,action)
+            state：存放状态
+            getter：过滤状态
+            mutation：修改状态
+            action：类似于mutation
+            module：模块化
+
+    1.state
+        组件中获取state的几种方式
+        1. 通过store对象获取其中的state中的状态：this.$state.state.xxx
+        2. 使用mapState辅助函数
+            1) mapState({key:state=>state.xxx})
+            2) mapState(['key','key',...])
+
+    2. getters
+        对state的过滤
+        当需要从state中派生出一个新的值出来的时候，就可以使用getters
+        getters的返回值会根据他的依赖被缓存起来，只有当一来发生变化，才会被触发
+  
+    3. mucation
+        改变state状态
+        mutation是改变vuex的state的唯一方式
+        mutation类似于事件，每一个mutation都有一个事件类型type和一个毁掉幻术handler，该回调函数就是事件改变state的逻辑
+        可以接收state作为第一参数
+  
+    4. action
+        action的功能类似于mutation
+        action是提交给mutation的，mutation直接修改state
+        action可以处理异步操作，mutation只能是同步
+        action可以封装mutation
+
+
+
+1. 在state中定义共享的状态或数据
+
+2. 在各个组件中获取状态并渲染到视图模板上
+    获取？
+    · this.$store.state.xxx
+    · ...mapState(['xxx','xxx',...])
+
+3. 用户在页面派发事件
+    派发？
+    · this.$store.dispatch('事件名'),
+      派发的事件在actions中定义,
+      actions中定义的事件名提交mucation(context.commit('mucation中定义的事件'))
+    · ...mapActions({'xxx','xxx',...})
+
+4. mucation提交修改
+    修改？
+    · this.$store.commit("mucation中定义的事件")
+    · ...mapMucation(['xxx','xxx',...])
+        
+        
+
+

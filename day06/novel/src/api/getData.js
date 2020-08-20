@@ -6,12 +6,16 @@ import $ from 'jquery'
 function getNovelList(id){
     // 解决返回的异步问题
     return new Promise((resolve,reject)=>{
-        let url=`http://www.biquge.info/list/${id}_1.html`;
+        // 1.使用ajax处理跨域请求
+        // let url=`http://www.biquge.info/list/${id}_1.html`;
+        // 2.使用请求代理处理跨域
+        let url=`/list/${id}_1.html`;
         // console.log(url)
         $.ajax({
-            url:'http://localhost:4000/getdata',
+            // url:'http://localhost:4000/getdata',
             // url作为参数传进去
-            data:{url:url},
+            // data:{url:url},
+            url:url,
             success(result){
                 // console.log(result)
                 let $dom=$(result);
@@ -44,10 +48,12 @@ function getNovelList(id){
 
 // 获取某个小说的章节列表 path:小说的请求地址
 function getChapter(path){
+    path=path.substring(22);
     return new Promise(resolve=>{
         $.ajax({
-            url:"http://localhost:4000/getdata",
-            data:{url:path},
+            // url:"http://localhost:4000/getdata",
+            // data:{url:path},
+            url:path,
             success(result){
                 // console.log(result)
                 let $dds=$(result).find("#list dd");
@@ -68,8 +74,9 @@ function getChapter(path){
 function getContent(path){
     return new Promise(resolve=>{
         $.ajax({
-            url:"http://localhost:4000/getdata",
-            data:{url:path},
+            // url:"http://localhost:4000/getdata",
+            // data:{url:path},
+            url:path,
             success(result){
                 // console.log(path); 路径
                 // console.log(result); 点击的章节内容页面

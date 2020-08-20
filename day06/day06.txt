@@ -11,4 +11,14 @@
     novel下载jq: npm i jquery -S
     stage4下面的node_modules下载got(cnpm i got),如果出错将里面文件全删除，重新cnpm i express got
 
+    补充第二种跨域方式:使用请求代理解决跨域
+    package.json里配置，getData.js修改url
+    "vue":{
+    "devServer":{
+      "proxy": "http://www.biquge.info"
+    }
+    
+
+  }
+
 
