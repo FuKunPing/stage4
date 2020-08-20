@@ -41,7 +41,7 @@ export default {
         add(p){
             console.log(p);
             let cart=this.cartPro;
-            let f=false;//假设没有
+            let f=false;//假设购物车没有库存中的数据
             for(let i=0;i<cart.length;i++){
                 if(p.name==cart[i].name){
                     f=true;
@@ -49,7 +49,7 @@ export default {
                 }
             }
             if(!f){
-                // 没有,添加
+                // 没有,添加到购物车
                 this.addPro({
                     pro:p
                 });

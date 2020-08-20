@@ -34,7 +34,9 @@ export default new Vuex.Store({
 		return state.stus.filter(stu=>stu.name.indexOf('a')!=-1)
 
 	},
+	// 购物车
 	cartPro(state){
+		// 购物车数组
 		let arr=[];
 		state.products.forEach((val)=>{
 			let name=val.name;

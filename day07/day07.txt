@@ -32,7 +32,7 @@ Vuex  状态管理模式
         当需要从state中派生出一个新的值出来的时候，就可以使用getters
         getters的返回值会根据他的依赖被缓存起来，只有当一来发生变化，才会被触发
   
-    3. mucation
+    3. mutation
         改变state状态
         mutation是改变vuex的state的唯一方式
         mutation类似于事件，每一个mutation都有一个事件类型type和一个毁掉幻术handler，该回调函数就是事件改变state的逻辑

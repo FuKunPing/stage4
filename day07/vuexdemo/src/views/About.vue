@@ -19,7 +19,7 @@ export default {
 		...mapState(['num','stus'])
 	},
 	methods: {
-		// 使用mucation的辅助函数
+		// 使用mutation的辅助函数
 		...mapMutations(['increase','inc2',ADD,REDUCE,'testAsync']),
 		add(){
 			// 没用，改不了vuex里的值,
