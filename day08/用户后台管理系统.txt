@@ -1,0 +1,12 @@
+用户后台管理系统案例
+
+创建脚手架项目client
+app.js
+
+server:
+cnpm init -y (package.json)
+cnpm i -S express ejs mongoose
+
+client
+$ cnpm i -S jquery
+

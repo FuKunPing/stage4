@@ -28,23 +28,30 @@ export default {
     data(){
         return {
             prods:[
-                {id:1,name:"海尔",price:3000},
-                {id:2,name:"华为",price:4000},
-                {id:3,name:"小米",price:2000},
-                {id:4,name:"联想",price:4500},
-                {id:5,name:"戴尔",price:3500},
+                {id:1,name:"海尔",price:3000,count:1},
+                {id:2,name:"华为",price:4000,count:1},
+                {id:3,name:"小米",price:2000,count:1},
+                {id:4,name:"联想",price:4500,count:1},
+                {id:5,name:"戴尔",price:3500,count:1},
             ]
         }
     },
     methods: {
-        ...mapMutations(['addPro']),
+        ...mapMutations(['addPro','addCount','reduceCount']),
         add(p){
-            console.log(p);
+            // console.log(p);
             let cart=this.cartPro;
             let f=false;//假设购物车没有库存中的数据
             for(let i=0;i<cart.length;i++){
                 if(p.name==cart[i].name){
+                    // 有重复的
                     f=true;
+                    // 重复，购物车数量增加(vuex里的值并没有添加成功)
+                    // cart[i].count++;
+                    // mutations里的方法修改products里的count
+                    this.addCount({
+                        idx:i
+                    })
                     break;
                 }
             }
@@ -56,7 +63,11 @@ export default {
             }
         },
         reduce(p){
-            console.log(p)
+            // console.log(p);
+            // 不能直接传下标，因为点击的时候顺序不一样，比如点戴尔添加，vuex下标戴尔是0，但是prods的0下标是海尔
+            // this.reduceCount({idx:i})
+            this.reduceCount({name:p.name})
+            
         }
     },
     computed: {
