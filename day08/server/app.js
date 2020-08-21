@@ -9,7 +9,7 @@ app.use(function(req,res,next){
   next();
 })
 
-// 获取所有数据
+// 获取数据库所有数据
 app.get('/getAll',function(req,res){
   User.find(function(err,docs){
     if(err){
@@ -20,7 +20,7 @@ app.get('/getAll',function(req,res){
   })
 })
 
-// 添加数据
+// 添加数据到数据库
 app.get('/add',function(req,res){
   let emp=req.query.emp;
   let o=new User(emp);

@@ -97,8 +97,9 @@ export default {
     }
   },
   methods: {
-    //都不为空才可以添加   
+    //都不为空才可以添加进数据库
     add(){
+      //使用自定义的构造类
         let emp=new Emp(
             this.empId,
             this.empName,
@@ -109,8 +110,10 @@ export default {
             this.address,
             this.edu
         );
+        // 点击添加，调用mutation方法修改state数据
         util.addEmp(emp).then(data=>{
             console.log(data)
+            //点击添加后跳转到首页
             this.$router.push('/')
         });
     }

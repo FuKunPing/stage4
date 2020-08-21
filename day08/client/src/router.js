@@ -10,6 +10,7 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes: [
     {
+      // 当发送的是/请求则重定向到/list页面
       path: '/',
       redirect: '/list'
     },

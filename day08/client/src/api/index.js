@@ -1,5 +1,6 @@
 import {ajax} from 'jquery'
 
+// 获取所有用户信息，发送ajax请求，app.js处理数据库
 function getAllEmps(){
   return new Promise((resolve,reject)=>{
     ajax({
@@ -19,6 +20,7 @@ function getAllEmps(){
   })
 }
 
+// 添加用户
 function addEmp(emp){
   // console.log(emp)
     return new Promise((resolve,reject)=>{

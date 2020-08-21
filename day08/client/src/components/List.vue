@@ -42,7 +42,7 @@ export default {
   computed: {
     ...mapState(['emps'])
   },
-    // 组件进入重新调用
+    // 组件进入重新调用，点击添加后跳转页面才会更新
   beforeRouteEnter(to,from,next){
     console.log('beforeRouteEnter')
     next(vm=>{
@@ -52,6 +52,7 @@ export default {
   methods: {
     ...mapMutations(["setAllEmps"]),
     _getAllEmps(){
+      // 调用方法获取数据库的用户信息，再把取到的数据通过mutation修改放到state里
       util.getAllEmps().then(res=>{
         this.setAllEmps({
           emps: res
