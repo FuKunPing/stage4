@@ -15,16 +15,18 @@ import {mapMutations} from 'vuex'
 export default {
   // 发送请求从数据库获取数据
   created() {
+    // console.log('组件创建成功')
     this._getAllEmps()
   },
   methods: {
     ...mapMutations(["setAllEmps"]),
     _getAllEmps(){
       util.getAllEmps().then(res=>{
+        // console.log('111')
         this.setAllEmps({
           emps: res
         })
-      })
+      });
     }
   }
 }

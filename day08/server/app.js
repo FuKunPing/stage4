@@ -27,8 +27,22 @@ app.get('/add',function(req,res){
   o.save(function(err,doc){
     if(err){
       res.send({status:"ERROR"})
+      return ;
 	}
-	res.send({status:"SCUESS"})
+	res.send({status:"SUCCESS"})
   })
 })
+
+// 删除员工数据
+app.get('/delete',function(req,res){
+  let emp=req.query.emp;
+  User.deleteOne(emp,function(err){
+    if(err){
+      res.send({status:"ERROR"});
+      return ;
+    }
+    res.send({status:"SUCCESS"});
+  });
+})
+
 

@@ -27,7 +27,10 @@
           {{emp.edu}}
         </div>
         <div class="col-sm-1">
-          <span>管理</span>
+          <span @click="modify(emp)">管理</span>
+        </div>
+        <div class="col-sm-1">
+          <span @click="del(emp,i)">删除</span>
         </div>
       </div>
     </div>
@@ -46,19 +49,40 @@ export default {
   beforeRouteEnter(to,from,next){
     console.log('beforeRouteEnter')
     next(vm=>{
-      vm._getAllEmps()
+		vm._getAllEmps();
     })
   },
   methods: {
-    ...mapMutations(["setAllEmps"]),
+	...mapMutations(["setAllEmps",'delEmp']),
+	
     _getAllEmps(){
       // 调用方法获取数据库的用户信息，再把取到的数据通过mutation修改放到state里
       util.getAllEmps().then(res=>{
         this.setAllEmps({
           emps: res
         })
-      })
-    }
+		});
+    },
+    // 管理员工
+    modify(emp){
+		console.log(emp);
+	},
+	// 删除
+	del(emp,i){
+		console.log(emp);
+		let f=confirm('确认删除这个员工?');
+		if(!f){
+			return ;
+		}
+		alert('删除成功')
+		util.delEmp(emp).then(res=>{
+			console.log(res);
+			this.delEmp({
+				idx:i
+			})
+			// this.$router.push('/')
+		})
+	},
   },
 }
 </script>
@@ -73,6 +97,6 @@ export default {
   }
   span:hover{
     cursor: pointer;
-    color: #ccc;
+    color: red;
   }
 </style>

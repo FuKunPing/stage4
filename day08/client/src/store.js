@@ -16,6 +16,10 @@ export default new Vuex.Store({
     // 点击添加用户，将数据添加进state的emps
     addEmp(state,payload){
       state.emps.push(payload.emp);
+    },
+    // 删除
+    delEmp(state,payload){
+      state.emps.splice(payload.idx,1);
     }
   }
 })

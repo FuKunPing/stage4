@@ -38,9 +38,28 @@ function addEmp(emp){
     })
 }
 
+// 删除
+function delEmp(emp){
+  return new Promise((resolve,reject)=>{
+    ajax({
+		url:"http://localhost:4000/delete",
+		data:{emp:emp},
+		success(result){
+			console.log(result);
+			resolve(result)
+		},
+		err(err){
+			reject(err)
+		}
+    })
+  })
+}
+
+
 
 
 export default {
   getAllEmps,
-  addEmp
+  addEmp,
+  delEmp
 }
