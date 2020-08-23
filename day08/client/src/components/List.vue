@@ -56,7 +56,7 @@ export default {
 	...mapMutations(["setAllEmps",'delEmp']),
 	
     _getAllEmps(){
-      // 调用方法获取数据库的用户信息，再把取到的数据通过mutation修改放到state里
+      // 调用api方法获取数据库的用户信息，再把取到的数据通过mutation修改放到state里
       util.getAllEmps().then(res=>{
         this.setAllEmps({
           emps: res
@@ -74,7 +74,8 @@ export default {
 		if(!f){
 			return ;
 		}
-		alert('删除成功')
+    alert('删除成功')
+    // 调用api方法删除数据库里的数据，然后调用mutation方法修改state里的值
 		util.delEmp(emp).then(res=>{
 			console.log(res);
 			this.delEmp({

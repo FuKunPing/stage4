@@ -10,7 +10,7 @@ cnpm i -S express ejs mongoose
 client
 $ cnpm i -S jquery
 
-分前端页面和狗太请求处理
+分前端页面和后台请求处理
     后台：
         处理前端发送的请求，向数据库进行增删改查的操作
         /getAll 获取数据库中所有的员工数据

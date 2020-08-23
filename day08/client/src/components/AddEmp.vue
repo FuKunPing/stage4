@@ -110,7 +110,7 @@ export default {
             this.address,
             this.edu
         );
-        // 点击添加，调用mutation方法修改state数据
+        // 点击添加，调用api方法添加数据到数据库
         util.addEmp(emp).then(data=>{
             console.log(data)
             //点击添加后跳转到首页
