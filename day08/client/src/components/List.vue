@@ -21,7 +21,7 @@
         <div class="col-sm-2">
           {{emp.telephone}}
         </div>
-        <div class="col-sm-2">
+        <div class="col-sm-1">
           {{emp.address}}
         </div>
         <div class="col-sm-1">
@@ -33,9 +33,9 @@
         <div class="col-sm-1">
           <span @click="modify(emp)">管理</span>
         </div>
-        <!-- <div class="col-sm-1">
+        <div class="col-sm-1">
           <span @click="del(emp,i)">删除</span>
-        </div> -->
+        </div>
       </div>
     </div>
 	<router-view></router-view>
@@ -118,7 +118,7 @@ export default {
 		} */
 	},
 	// 删除
-	/* del(emp,i){
+	del(emp,i){
 		console.log(emp);
 		let f=confirm('确认删除这个员工?');
 		if(!f){
@@ -133,7 +133,7 @@ export default {
 			})
 			// this.$router.push('/')
 		})
-	}, */
+	},
   },
 }
 </script>

@@ -82,7 +82,7 @@ function modify(filter,data){
   }
 
 // 删除
-/* function delEmp(emp){
+function delEmp(emp){
   return new Promise((resolve,reject)=>{
     ajax({
 		url:"http://localhost:4000/delete",
@@ -96,7 +96,7 @@ function modify(filter,data){
 		}
     })
   })
-} */
+}
 
 
 
@@ -104,7 +104,7 @@ function modify(filter,data){
 export default {
   getAllEmps,
   addEmp,
-//   delEmp,
+  delEmp,
   getEmpInfo,
   modify
 }

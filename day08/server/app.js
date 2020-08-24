@@ -62,11 +62,11 @@ app.post('/modify',function(req,res){
 	  if(err){
 		console.log(err)
 		res.send({status:"ERROR",msg:"网络故障"})
-		return
+		return ;
 	  }
 	  if(raw.nModified==0){
 		res.send({status:"ERROR",msg:"数据未修改"})
-		return
+		return ;
 	  }
 	  res.send({status:"SUCCESS"});
 	})
@@ -74,7 +74,7 @@ app.post('/modify',function(req,res){
 
 
 // 删除员工数据
-/* app.get('/delete',function(req,res){
+app.get('/delete',function(req,res){
   let emp=req.query.emp;
   User.deleteOne(emp,function(err){
     if(err){
@@ -83,6 +83,6 @@ app.post('/modify',function(req,res){
     }
     res.send({status:"SUCCESS"});
   });
-}) */
+})
 
 
