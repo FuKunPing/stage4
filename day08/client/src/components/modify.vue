@@ -135,13 +135,13 @@ export default {
         // 获取两个标签，并转换成jQuery对象，跟id一样
         let $con=$(this.$refs.container);
         let $mod=$(this.$refs.modify);
-        let con_h=parseInt($con.css('height'))
+        let con_h=parseInt($con.css('height'))//'100px'字符串转成num
         let mod_h=parseInt($mod.css('height'))
         console.log(con_h,mod_h)
-        /* if(480 > mod_h){ //'100px'字符串转成num
+        /* if(480 > mod_h){ 
             $mod.css("height",'480px')
         } */
-        if(con_h > mod_h){ //'100px'字符串转成num
+        if(con_h > mod_h){
             $mod.css("height",con_h+70)
         }
     },
