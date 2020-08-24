@@ -63,21 +63,26 @@ function getEmpInfo(empId,empName){
 function modify(filter,data){
 	return new Promise((resolve,reject)=>{
 		ajax({
-			url:'http:localhost:4000/modify',
-			data:{filter,data},
-			method:'post',
-			success(result){
-				resolve(result)
-			},
-			error(err){
-				reject(err)
+		url: 'http://localhost:4000/modify',
+		data: {filter,data},
+		method: 'post',
+		success(res){
+			if(res.status=='ERROR'){
+				reject("修改失败")
+				return ;
 			}
+			resolve("修改成功")
+		},
+		error(err){
+			console.log(err)
+			reject("修改失败")
+		}
 		})
 	})
-}
+  }
 
 // 删除
-function delEmp(emp){
+/* function delEmp(emp){
   return new Promise((resolve,reject)=>{
     ajax({
 		url:"http://localhost:4000/delete",
@@ -91,7 +96,7 @@ function delEmp(emp){
 		}
     })
   })
-}
+} */
 
 
 
@@ -99,7 +104,7 @@ function delEmp(emp){
 export default {
   getAllEmps,
   addEmp,
-  delEmp,
+//   delEmp,
   getEmpInfo,
   modify
 }

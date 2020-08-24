@@ -4,6 +4,8 @@ const app = express();
 
 app.listen(4000);
 
+app.use(express.urlencoded({extended:true}))
+
 app.use(function(req,res,next){
   res.header("Access-Control-Allow-Origin","*")
   next();
@@ -52,9 +54,27 @@ app.get('/getEmpInfo',function(req,res){
 
 })
 
+// 修改
+app.post('/modify',function(req,res){
+	let filter = req.body.filter;
+	let data = req.body.data;
+	User.updateOne(filter,data,(err,raw)=>{
+	  if(err){
+		console.log(err)
+		res.send({status:"ERROR",msg:"网络故障"})
+		return
+	  }
+	  if(raw.nModified==0){
+		res.send({status:"ERROR",msg:"数据未修改"})
+		return
+	  }
+	  res.send({status:"SUCCESS"});
+	})
+  })
+
 
 // 删除员工数据
-app.get('/delete',function(req,res){
+/* app.get('/delete',function(req,res){
   let emp=req.query.emp;
   User.deleteOne(emp,function(err){
     if(err){
@@ -63,6 +83,6 @@ app.get('/delete',function(req,res){
     }
     res.send({status:"SUCCESS"});
   });
-})
+}) */
 
 

@@ -1,7 +1,8 @@
 <template>
-  <div class="list">
+  <div class="list" ref='list'>
+	<button @click="toggle" class="btn btn-info">{{toggleShow}}</button>
     <div class="container">
-      <div class="row" v-for="(emp,i) in emps" :key="i">
+      <div class="row" v-for="(emp,i) in filterEmps" :key="i">
         <div class="col-sm-1">
           {{emp.empId}}
         </div>
@@ -46,8 +47,34 @@ import util from '../api'
 import {mapState,mapMutations} from 'vuex'
 
 export default {
+	data(){
+		return {
+			status:1
+		}
+	},
   computed: {
-    ...mapState(['emps'])
+	...mapState(['emps']),
+	// 切换按钮
+	toggleShow(){
+		return this.status==1?'所有信息':this.status==2?'所有在职':"所有离职"
+	},
+	// 过滤员工信息
+	filterEmps(){
+		let onEmps=[];//在职
+		let offEmps=[]//离职
+		let emps=this.emps;//所有的
+		for(let i=0;i<emps.length;i++){
+			if(emps[i].status){
+				// 值为true，表示离职
+				offEmps.push(emps[i]);
+			}else{
+				// false为在职的
+				onEmps.push(emps[i]);
+			}
+		}
+		// 1:显示所有 2 显示在职 3 显示离职
+		return this.status==1?this.emps:this.status==2?onEmps:offEmps
+	}
   },
     // 组件进入重新调用，点击添加后跳转页面才会更新
   beforeRouteEnter(to,from,next){
@@ -75,12 +102,23 @@ export default {
 			query:{
 				empId:emp.empId,
 				empName:emp.empName
-				}
+			}
 		})
 
 	},
+	// 切换
+	toggle(){
+		this.status=this.status==1?2:this.status==2?3:1;
+		/* if(this.status==1){
+			this.status=2
+		}else if(this.status==2){
+			this.status=3
+		}else{
+			this.status=1
+		} */
+	},
 	// 删除
-	del(emp,i){
+	/* del(emp,i){
 		console.log(emp);
 		let f=confirm('确认删除这个员工?');
 		if(!f){
@@ -95,7 +133,7 @@ export default {
 			})
 			// this.$router.push('/')
 		})
-	},
+	}, */
   },
 }
 </script>

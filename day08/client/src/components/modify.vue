@@ -103,6 +103,7 @@
 <script>
 import util from '../api/index.js'
 import $ from 'jquery'
+import {mapMutations} from 'vuex'
 
 export default {
     data(){
@@ -145,6 +146,7 @@ export default {
         }
     },
     methods: {
+        ...mapMutations(['modifyEmp']),
         _getEmpInfo(empId,empName){
             // 获取某个员工的数据
             // console.log(empId,empName)
@@ -179,21 +181,27 @@ export default {
             let filter={empId:this.empId}
             // 修改的数据
             let data={
+                // ...filter,
+                empId:this.empId,
                 empName:this.empName,
-                gender: this.emp.gender,
-                age: this.emp.age,
-                position: this.emp.position,
-                telephone:this.emp.telephone,
-                address: this.emp.address,
-                edu: this.emp.edu,
-                status:this.emp.status
+                gender: this.gender,
+                age: this.age,
+                position: this.position,
+                telephone:this.telephone,
+                address: this.address,
+                edu: this.edu,
+                status:this.status
             }
             util.modify(filter,data).then(res=>{
-                console.log(res)
+                alert(res)
+                // 修改状态管理里面的数据
+                this.modifyEmp({
+                    filter,data
+                })
             }).catch(err=>{
-                console.log(err)
+                alert(err)
             }).finally(()=>{
-                this.router.push('/')
+                this.$router.push('/')
             })
         }
     },

@@ -18,8 +18,23 @@ export default new Vuex.Store({
       state.emps.push(payload.emp);
     },
     // 删除
-    delEmp(state,payload){
+    /* delEmp(state,payload){
       state.emps.splice(payload.idx,1);
+    }, */
+    // 修改
+    modifyEmp(state,paylaod){
+      // filter:{emmId:xxx}
+      // data:{xxx:xxx,xxx:xxx}
+      let filter=paylaod.filter;
+      let data=paylaod.data;
+      for(let i=0;i<state.emps.length;i++){
+        let emp=state.emps[i];
+        if(emp.empId==filter.empId){
+          state.emps[i]=data;
+          // state.emps[i]={...filter,...data};
+          break;  
+        }
+      }
     }
   }
 })
