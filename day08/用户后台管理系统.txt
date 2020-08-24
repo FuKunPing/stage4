@@ -61,6 +61,18 @@ $ cnpm i -S jquery
                 修改成功后,路由跳转(this.$route.push('/'))
 
 
+/*
+初始化client文件夹并提交
+git init
+git add -A
+git commit -m ''
+
+创建新的分支v2,切换到v2分支
+git branch v2
+git checkout v2
+*/
+
+
 
 
 

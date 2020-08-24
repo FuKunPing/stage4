@@ -33,6 +33,26 @@ app.get('/add',function(req,res){
   })
 })
 
+
+// 管理某员工的数据
+app.get('/getEmpInfo',function(req,res){
+    let query=req.query;//{empId:'',empName:''}
+    User.find(query,function(err,docs){
+		if(err){
+			console.log(err);
+			res.send({status:"ERROR",msg:"网络故障"})
+			return ;
+		}
+		if(docs.length==0){
+			res.send({status:"ERROR",msg:"查无此数据"})
+			return ;
+		}
+		res.send({status:"SUCCESS",data:docs[0]})
+    })
+
+})
+
+
 // 删除员工数据
 app.get('/delete',function(req,res){
   let emp=req.query.emp;

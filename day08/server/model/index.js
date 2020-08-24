@@ -10,7 +10,8 @@ const userSchema=new Schema({
     position:String,
     telephone:String,
     address:String,
-    edu:String
+    edu:String,
+    status:{type:Boolean,default:false}//员工在职状态
 });
 
 // 创建Model

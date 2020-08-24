@@ -38,6 +38,44 @@ function addEmp(emp){
     })
 }
 
+// 管理
+function getEmpInfo(empId,empName){
+	return new Promise((resolve,reject)=>{
+		ajax({
+			url:"http://localhost:4000/getEmpInfo",
+			data:{empId,empName},
+			success(result){
+				if(result.status=="SUCCESS"){
+					resolve(result.data)
+				}else{
+					reject("error")
+				}
+			},
+			error(err){
+				console.log(err);
+				reject(err)
+			}
+		})
+	})
+}
+
+// 修改
+function modify(filter,data){
+	return new Promise((resolve,reject)=>{
+		ajax({
+			url:'http:localhost:4000/modify',
+			data:{filter,data},
+			method:'post',
+			success(result){
+				resolve(result)
+			},
+			error(err){
+				reject(err)
+			}
+		})
+	})
+}
+
 // 删除
 function delEmp(emp){
   return new Promise((resolve,reject)=>{
@@ -61,5 +99,7 @@ function delEmp(emp){
 export default {
   getAllEmps,
   addEmp,
-  delEmp
+  delEmp,
+  getEmpInfo,
+  modify
 }

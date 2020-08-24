@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="list">
     <div class="container">
       <div class="row" v-for="(emp,i) in emps" :key="i">
         <div class="col-sm-1">
@@ -24,16 +24,20 @@
           {{emp.address}}
         </div>
         <div class="col-sm-1">
+          {{emp.status?'离职':"在职"}}
+        </div>
+		<div class="col-sm-1">
           {{emp.edu}}
         </div>
         <div class="col-sm-1">
           <span @click="modify(emp)">管理</span>
         </div>
-        <div class="col-sm-1">
+        <!-- <div class="col-sm-1">
           <span @click="del(emp,i)">删除</span>
-        </div>
+        </div> -->
       </div>
     </div>
+	<router-view></router-view>
   </div>
 </template>
 
@@ -63,9 +67,17 @@ export default {
         })
 		});
     },
-    // 管理员工
+    // 老师的管理员工，使用编程式导航,传参
     modify(emp){
-		console.log(emp);
+		// console.log(emp);
+		this.$router.push({
+			path:'/list/modify',
+			query:{
+				empId:emp.empId,
+				empName:emp.empName
+				}
+		})
+
 	},
 	// 删除
 	del(emp,i){
@@ -89,6 +101,9 @@ export default {
 </script>
 
 <style scoped>
+	.list{
+		position: relative;
+	}
   .row>div{
     border:1px solid black;
   }
