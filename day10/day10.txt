@@ -1,0 +1,101 @@
+webpack
+
+1.webpack是什么?
+    是一个js应用程序的静态模块打包工具
+    
+2.webpack是如何工作的？
+    将项目当成一个整体，通过给定的入口(entry),从该入口文件开始,找到项目中所有的依赖
+    经过模块依赖加载,分析,打包三个流程,最终打包成可以直接运行的一个或多个bundle
+
+3.安装webpack
+    (全局安装 cnpm i webpack -g 
+            cnpm i webpack-cli -g)
+
+    用这种方式安装：
+    --save ==> -S 安装在dependencies依赖中(生产环境的依赖，最终是要打包在成品中)
+    --save-dev  ==> -D 安装在devDependencies中(开发环境的依赖，不需要打包到成品中)
+
+    npm init -y
+    cnpm i webpack webpack-cli -D
+
+    cnpm i html-webpack-plugin -D
+    cnpm i clean-webpack-plugin -D
+    cnpm i css-loader -D
+    cnpm i style-loader -D
+    cnpm i less-loader -D
+    cnpm i mini-css-extract-plugin -D
+
+
+4.无配置文件打包
+    1)写好js后,在package.json中的scripts属性里添加"start":"webpack index.js"
+    2)在项目的根目录中使用npm start命令
+
+    打包成功后，显示的信息：
+        hash: 打包成功产生的唯一hash值
+        version：webpack的版本号
+        time：打包耗时
+        build at：打包时间
+        Asset：打包生产的静态文件
+        Size：静态文件的大小
+        Chunks：代码块
+        Chunk Names：chunk对应的名称
+    默认在项目根目录下生成一个dist文件夹，里面有一个main.js，该文件就是打包压缩后的文件
+
+5.常用选项
+    --mode 指定打包模式(开发模式development,生产模式production)
+    --config 指定一个webpack的配置文件
+    --watch 开启监听模式
+    --hot 开启模块热更新
+    --progess 显示打包进度
+
+6.使用配置文件webpack.config.js
+    webpack配置文件有4个核心概念:
+        1)entry: 
+            表示入口文件,从哪个文件开始查找直接或间接的依赖并打包,
+            可以接收的参数: 字符串,数组,对象
+            entry:'path'
+                以提供的文件为入口
+            entry:['path1','path2']
+                多个文件为入口，最终打包成一个文件
+            entry:{
+                chunkName:"path1",
+                chunkName:"path2"
+            }
+                多个文件入口，打包生成多个文件，文件名就是chunkName
+        2)output:
+            指定打包生成的文件的保存路径
+            output中有3个常用的属性
+                path:指定bundle输出的存放路径(默认dist) path.resolve(__dirname,'文件夹名称')
+                filename:指定生成的bundle的名称(默认main.js)
+                publicPath:指定一个在浏览器中引用的url
+
+            如果入口文件有多个，最终生成多个bundles
+                a) 如果没有设置filename,则最终生成的bundle名就是对应的chunkName
+                b) 如果设置了filename具体的文件名,则报错,可以使用占位符来代替  
+                    [name]:对应的是entry设置的key(chunkName)
+                    [hash]:对应的是每次打包完成时,产生的唯一的hash值,可以指定长度 [hash:6]
+                    [chunkhash]:chunk对应生成的hash,根据chunkName生成的对应的hash,只要entry中的入口没有变化,chunkhash就不会变化
+                    [contenthash]:把css样式从js中抽离出来,就可以使用contenthash来命名
+
+        3)plugins: 插件
+            plugins是webpack中的重要组成部分，可以解决loader解决不了的问题
+            html-webpack-plugin：使用HTML模板生成一个简单的HTML页面
+            clean-webpack-plugin：清除上一次打包的内容
+            mini-css-extract-plugin: 将css打包成一个单独的文件
+
+        4)loader:加载器
+            webpack将每一个文件当成一个模块，模块可以是任意的静态资源文件，但是webpack只认识js，不认识其他类型的资源文件
+            loader就是用来帮助webpack处理js以外的任意静态资源文件
+            处理不同类型的静态资源需要使用不同的loader
+            如css或less文件：
+                css-loader 让webpack认识css文件
+                style-loader 将样式内联到页面中
+                less-loader 认识less文件
+            loader需要单独安装并且配置，配置参数：
+                test:使用正则匹配文件类型(后缀名)
+                use:使用哪个或哪些loader
+
+            
+                
+
+    

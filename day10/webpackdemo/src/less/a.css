@@ -1,0 +1,9 @@
+body {
+  background-color: #ccc;
+}
+div {
+  border: 1px solid blue;
+}
+p {
+  border: 2px dashed gold;
+}

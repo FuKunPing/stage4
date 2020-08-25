@@ -1,0 +1,16 @@
+@colorE:#ccc;
+
+body{
+    background-color:@colorE
+}
+
+.border(@a:1px;@b:solid;@c:blue){
+    border:@a @b @c;
+}
+
+div{
+    .border
+}
+p{
+    .border(2px,dashed,gold)
+}
