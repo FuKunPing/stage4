@@ -1,8 +1,9 @@
 body {
   background-color: #ccc;
 }
-div {
+.con {
   border: 1px solid blue;
+  background-color: blue;
 }
 p {
   border: 2px dashed gold;

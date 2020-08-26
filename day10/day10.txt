@@ -24,6 +24,19 @@ webpack
     cnpm i style-loader -D
     cnpm i less-loader -D
     cnpm i mini-css-extract-plugin -D
+    cnpm i file-loader -D
+    cnpm i url-loader -D
+    cnpm i -D @babel/plugin-transform-runtime
+    cnpm i -D babel-loader
+    cnpm i -S @babel/polyfill
+    cnpm i -S @babel/runtime
+    cnpm i -S core-js@3
+    cnpm i -D webpack-dev-server
+    cnpm i -D vue-loader vue-template-compiler vue-style-loader
+    cnpm i -S vue
+
+
+
 
 
 4.无配置文件打包
@@ -94,6 +107,107 @@ webpack
             loader需要单独安装并且配置，配置参数：
                 test:使用正则匹配文件类型(后缀名)
                 use:使用哪个或哪些loader
+
+        5)将css打包成一个单独的文件
+            mini-css-extract-plugin
+
+        6)css的模块化
+            css的模块化就是将js的模块化思想带入到css中.
+            所有的类名都只作用于当前模块,这样就不必担心在不同模块中具有相同类名造成的覆盖问题
+
+        7)多页面配置
+            html-webpack-plugin
+            每new一个实例就会创建一个对应的HTML页面
+
+        8)webpack的扩展配置
+            resolve：帮助webpack快速查找依赖，通过配置：
+                extensions:后缀名
+                alias:别名，简化引用的路径
+
+        9)静态资源文件的处理
+            file-loader:解决图片引用路径问题
+            url-loader：将图片转换为base64DataUrl格式，直接打包到js中
+            静态资源文件指前端中的图片，字体文件，音频视频等等，webpack也会将这类文件当成模块来进行打包处理。
+
+        10)babel配置
+            10.1) babel是js的编译器，通过babel可以将es6的语法转换成浏览器可识别的语法
+
+            10.2) babel的基本安装包和插件
+                安装：cnpm i -D  @babel/core @babel/cli @babel/preset-env
+                @babel/core  babel的核心代码
+                @babel/cli   babel的命令行，执行babel命令
+                @babel/preset-env   预设，这是个预设组合插件，包含了所有的语法转换插件
+                @babel/plugin-transform-runtime:可以重复使用babel注入的程序，提供一个统一的模块化应用
+            
+            10.3)配置文件
+                .babelrc
+                    "presets": [
+                        "@babel/preset-env"
+                    ]
+
+            10.4)polyfill(垫片)
+                babel只负责语法的转换，但是新的api是转换不了的，
+                比如promise，Object.assign(),这时候就需要使用polyfill。
+                babel的folyfill为当前环境提供一个垫片,用于垫平不同浏览器或不同环境下的差异.
+                babel的编译过程就是将语法统一,通常就是将高版本的语法转换成低版本的语法.
+                polyfill就是让所有的浏览器支持所有的特性.
+
+                polyfill要在生产模式下安装
+                    cnpm i -S @babel/polyfill
+
+                polyfill的问题：
+                    - 会直接修改内置的原型，造成全局污染
+                    - 无法按需引入，加载所有的polyfill会导致打包文件太大
+                可以使用babel-runtime解决以上问题，但也不是完美的，
+                生产模式安装babel-runtime：
+                    cnpm i -S @babel/runtime
+                    cnpm i -S core-js@3
+
+        11)webpack-dev-server插件
+            搭建一个本地开发环境
+            webpack提供了一个本地开发环境，这个本地服务是基于express创建的
+            cnpm i -D webpack-dev-server
+            该插件提供的功能：
+                - reloading：触发浏览器自动刷新的功能
+                - 浏览器提示错误
+                - 模块热更新，在不刷新页面的情况下更新代码
+                - 借口的代理，请求代理
+
+        12)soure-map 代码调试
+            开发模式 devtool:
+            "cheap-module-eval-source-map"
+
+            生产模式 devtool:
+            "source-map"
+
+        13)vue的处理
+            开发依赖：vue-loader
+            vue-template-compiler
+            vue-style-loader
+            生产依赖：vue
+
+        14)环境的拆分
+            在webpack中为了方便开发调试和上线，一般会设置两个webpack配置文件
+            将webpack.config.js配置文件拆分成3部分：
+                webpack.base.js: 基础配置
+                webpack.dev.js:  开发环境的配置
+                webpack.pro.js: 生产环境的配置
+
+        15)判断当前环境是开发还是生产
+            安装cross-env 设置环境变量
+            cnpm i -D cross-env
+
+        16)webpack-merge
+            配置文件的合并
+            cnpm i -D webpack-merge
+
+
+                
+
+                
+
+
+                
 
             
                 

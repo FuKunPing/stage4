@@ -9,10 +9,11 @@ let MiniCssExtractPlugin=require('mini-css-extract-plugin')
 // vue插件
 let VuePlugin=require('vue-loader/lib/plugin')
 
+// 获取当前运行的环境是不是开发环境
+let isDev=process.env.NODE_ENV=='development';
+console.log(isDev);
+
 module.exports = {
-    mode: 'development', // 环境
-    devtool:
-        "cheap-module-eval-source-map",
     // 扩展
     resolve:{
         //后缀名   (引入文件时，可以不写后缀名)
@@ -22,73 +23,25 @@ module.exports = {
             '@css':'../css'
         }
     },
-   /*  entry: {
-        aaa: "./src/js/index.js",
-        bbb: "./src/js/index2.js"
-      }, */
+
     entry:'./src/main.js',
+
     output: {
-      // __dirname表示的是当前项目的路径
       path: __dirname+'/dist2',
       filename: '[hash:6]-tt-[name].js'
     },
 
     // 插件
     plugins:[
-       /*  new HtmlPlugin({
-            //指定生成文件的名称
-            filename:'a.html', 
-            //指定使用的模板
-            template:'./src/testWeb.html', 
-            // 指定使用哪些chunks(entry中的key)
-            chunks:['aaa'],
-        }),
-        new HtmlPlugin({
-            filename:'b.html',
-            template:'./src/testWeb.html',
-            chunks:['bbb'],
-            minify:{
-                // 删除注释
-                removeComments:true,
-                // 删除空白和换行
-                collapseWhitespace:true,
-                // 删除css中空白和换行
-                minifyCSS:true
-            }
-        }), */
         new HtmlPlugin({
             template:"./src/testWeb.html"
         }),
         new CleanWebpackPlugin(),
         new MiniCssExtractPlugin({
-            // filename:'index-[name].css'
             filename:'[name]-[contenthash:6].css'
         }),
         new VuePlugin()
     ],
-
-    // 配置webpack-dev-server
-    devServer:{
-        // 在内存中的路径
-        contentBase:__dirname + '/dist',
-        // 主机名
-        host:"localhost",
-        // 端口号
-        port:4001,
-        // 自动打开浏览器
-        open:true,
-        overlay:{
-            // 出错时显示在页面
-            errors:true
-        },
-        // 开启热加载
-        hot:true,
-        // 请求代理
-        proxy:{      
-        }
-    },
-
-
 
     // loaders
     // 配置不同的loader来处理非js类型的文件
@@ -98,6 +51,7 @@ module.exports = {
             {
                 test:/\.(css|less)$/,
                 use:[
+                    // isDev?'vue-style-loader':MiniCssExtractPlugin.loader
                     MiniCssExtractPlugin.loader,
                     // 'vue-style-loader',
                     {

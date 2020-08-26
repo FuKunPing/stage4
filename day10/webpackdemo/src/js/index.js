@@ -5,11 +5,18 @@ import p from './b.js';
 import '../css/b.css'
 
 // 引入less文件
-import '../less/a.less'
+import a from '../less/a.less'
 
+let divEle=div();
+divEle.className=a.con
 
-console.log(div())
-console.log(p())
+// 引入图片
+import img from '../img/luelue.JPG'
 
-document.body.appendChild(div())
+let pic=document.createElement('img');
+pic.src=img;
+
+document.body.appendChild(divEle)
 document.body.appendChild(p())
+document.body.appendChild(pic)
+
