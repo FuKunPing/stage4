@@ -24,12 +24,6 @@ module.exports=merge(base,{
         hot:true,
         // 请求代理
         proxy:{       
-        },
-        before(app){
-            let data=require('./goods.json');
-            app.get('/getData',(req,res)=>{
-                res.send(data)
-            })
         }
     },
 })

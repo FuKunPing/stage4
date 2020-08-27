@@ -13,5 +13,11 @@ pc-demo
     main.js  创建Vue实例
     router.js   路由
     store.js 状态管理
-5.安装cnpm i -S vue-router vuex
+
+安装cnpm i -S vue-router vuex
+
+5.在components下新建main.vue,配置相关路由并引用
+
+5.1pc-demo:  cnpm i -S axios
+
 

@@ -22,7 +22,7 @@ module.exports = {
     },
     plugins:[
         new HtmlPlugin({
-            template:"./src/index.html"
+            template:"./public/index.html"
         }),
         new CleanWebpackPlugin(),
         new MiniCssExtractPlugin({
@@ -54,13 +54,13 @@ module.exports = {
                     }
             },
             {
+                test:/\.(ttf|woff)$/,
+                use:"file-loader"
+            },
+            {
                 test:/\.js$/,
                 use:'babel-loader',
                 exclude:/node_modules/
-            },
-            {
-                test:/\.(ttf|woff)$/,
-                use:"file-loader"
             },
             {
                 test:/\.vue$/,
