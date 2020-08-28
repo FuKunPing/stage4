@@ -20,6 +20,7 @@ module.exports=merge(base,{
             // 出错时显示在页面
             errors:true
         },
+        historyApiFallback:true,
         // 开启热加载
         hot:true,
         // 请求代理

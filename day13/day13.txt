@@ -14,6 +14,11 @@ qq音乐案例
       App.vue
       main.js
 
+
+      master 主分支
+      v2 day08创建的分支（用户管理）
+      teacher,mine qqmusic分支
+
     2.将common文件夹内容复制进去，同时在common中新建js文件夹
 
     3.在main.js中引入各个模块并创建Vue实例对象,同时引入fastclick解决300ms
