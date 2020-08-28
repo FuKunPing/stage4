@@ -1,5 +1,11 @@
 <template>
     <div class='index-wrap'>
+        <!-- 登录遮罩层 -->
+        <Dialog><Login></Login></Dialog>
+        <!-- 购买的遮罩层 -->
+        <Dialog v-show='showBuy'>
+          <div>{{info}}</div>
+        </Dialog>
         <!-- main组件左侧产品信息和消息 -->
         <div class="index-left">
           <div class="index-left-block">
@@ -16,7 +22,7 @@
             <!-- 幻灯片组件 -->
               <Slider :imgs='slideArr'></Slider>
             <!-- 产品展示  -->
-              <ShowList :list='showList'></ShowList>
+              <ShowList :list='showList' @buyOne='buyOne'></ShowList>
           </div>
     </div>
 </template>
@@ -26,9 +32,14 @@ import AllProducts from './AllProducts.vue'
 import NewList from './NewList'
 import Slider from './Slider'
 import ShowList from './ShowList'
+import Dialog from './Dialog'
+import Login from './Login'
+
     export default {
       data(){
         return {
+          showBuy:false,
+          info:'',
           productList:{ /*产品信息*/ 
                 pc:{
                     title:'PC产品',
@@ -122,13 +133,21 @@ import ShowList from './ShowList'
           ]
         }
       },
+      methods: {
+        buyOne(title){
+          this.info=title;
+          this.showBuy=true;
+        }
+      },
 
     //注册组件
       components:{
         AllProducts,
         NewList,
         Slider,
-        ShowList
+        ShowList,
+        Dialog,
+        Login
       }
     }
 </script>
@@ -180,18 +199,18 @@ import ShowList from './ShowList'
 }
 .index-board-list {
   overflow: hidden;
+  display: flex;
+  flex-wrap:wrap;
+  justify-content: space-between;
 }
 .index-board-item {
-  float: left;
+  /* float: left; */
   width: 400px;
   background: #fff;
   box-shadow: 0 0 1px #ddd;
   padding: 20px;
-  margin-right: 20px;
+  /* margin-right: 20px; */
   margin-bottom: 20px;
-}
-.index-board-item:nth-child(even){
-  margin-right: 0;
 }
 
 .index-board-item-inner {

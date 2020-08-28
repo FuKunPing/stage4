@@ -5,13 +5,18 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state:{
-
+        show:false
     },
     getters:{
 
     },
     mutations:{
-
+        close(state){
+            state.show=false
+        },
+        open(state){
+            state.show=true
+        }
     },
     actions:{
         

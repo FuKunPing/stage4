@@ -1,37 +1,46 @@
 <template>
-  <div>
-        <div class='app-head'>
-            <div class="app-head-inner">
-            <router-link :to="{path: '/'}">
-                <img src="./assets/logo.png">
-            </router-link>
-            <div class="head-nav">
-                <ul class="nav-list">
-                    <li></li>
-                    <!--<li>退出</li>-->
-                    <li @click="open">登录</li>
-                    <li>注册</li>
-                </ul>
-            </div>  
-            </div>
-      </div>
-        <div class='container'>  
-            <router-view></router-view>
+  <div >
+      <div class='app-head'>
+        <div class="app-head-inner">
+          <img src="./assets/logo.png">
+          <div class="head-nav">
+            <ul class="nav-list">
+              <li></li>
+              <!--<li>退出</li>-->
+              <li @click="open">登录</li>
+              <li>注册</li>
+            </ul>
+          </div>  
         </div>
+      </div>
+      <div class='container'>
+        <Main :showLog="show" @close='close'></Main>
+      </div>
       <div class='app-foot'>
           <p>© 2017 web vue-project</p>
       </div>
   </div>
 </template>
-
 <script>
-import {mapState,mapMutations} from 'vuex'
-
-  export default {
-	  methods: mapMutations(['open'])
-
-    
+import Main from "./components/Main"
+export default {
+  data() {
+    return {
+      show: false
+    }
+  },
+  methods: {
+    open(){
+      this.show = true
+    },
+    close(){
+      this.show = false
+    }
+  },
+  components: {
+    Main
   }
+}
 </script>
 
 <style>
@@ -175,4 +184,3 @@ import {mapState,mapMutations} from 'vuex'
     padding-left: 15px;
   }
 </style>
-

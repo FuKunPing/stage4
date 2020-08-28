@@ -8,7 +8,7 @@ pc-demo
 4.在src下创建：
     App.vue  根组件
     assets/  存放静态文件 
-    components/   存放组件
+    components/   存放组件 
     index.html  挂载页面
     main.js  创建Vue实例
     router.js   路由
@@ -18,6 +18,64 @@ pc-demo
 
 5.在components下新建main.vue,配置相关路由并引用
 
-5.1pc-demo:  cnpm i -S axios
+5.1  pc-demo:  cnpm i -S axios
+
+
+
+
+?.遮罩层的显示效果
+    有两个遮罩层：登录和购买
+    登录效果：
+        点击App组件中的登录按钮，弹出遮罩层
+        遮罩层在Main组件中，而Main组件是App组件的子组件
+        App在调用子组件Main时，需要传递一个数据告诉Main组件，遮罩层是否显示
+        <Main :showLog='show' />
+        其中showLog是绑定给Main组件的数据，需要Main组件在props中定义接收
+        show是App组件中定义的数据，默认值为false，不显示
+        当点击登录按钮，触发open方法时，实际上就是修改show的值为true，因为Main中的showLog的值就是从父组件中获取的，
+        所以也会同步修改为true。
+
+        Main组件中调用Dialog组件通过showLog值来决定Dialog组件是否显示
+        <Dialog v-show="showLog">
+            登录组件
+        </Dialog>
+    购买效果
+        购买的组件ShowProducts时Main组件的子组件
+        而点击购买的按钮是在子组件中的，所以需要子组件派发事件给父组件Main
+        点击按钮，触发buyOne方法，该方法中就是派发一个buyOne事件给父组件，同时传递购买物品的名称
+        buyOne(){
+            this.$emit('buyOne',title)
+        }
+        Main组件调用ShowProducts组件时，需要绑定事件，事件名就是buyOne，同时触发自定义方法
+        <ShowProducts @buyOne="buyOne"></ShowProducts>
+        在methods中定义buyOne方法
+        buyOne(title){
+            this.showBuy = true
+            this.info = title
+        }
+
+?.遮罩层的关闭效果
+    遮罩层的关闭是通过点击Dialog组件中的x实现的，但是关闭遮罩层实际上是通过修改true值为false实现的，即在Dialog组件中点击x触发关闭方法，从而派发事件给父组件Main
+    close(){
+      this.$emit('close')
+    }
+  Main组件在调用Dialog组件时绑定该方法
+    <Dialog @close='close'>
+      其他组件
+    </Dialog>
+  同时绑定close方法
+    clsoe(){
+      // 自己定义的属性，可以直接修改
+      this.showBuy = false
+      // shoLog值是APP组件中定义的，不能修改，通过派发事件
+      this.$emit('close')
+    }
+  在App组件中调用Main组件绑定close事件
+    <Main :showLog="show" @close='close' />
+  再定义close方法修改show的值
+    close(){
+      this.show = false
+    }
+
 
 
