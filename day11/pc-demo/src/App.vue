@@ -16,7 +16,7 @@
             </div>
       </div>
         <div class='container'>  
-            <router-view></router-view>
+            <Main :showLog="show" @close='close'></Main>
         </div>
       <div class='app-foot'>
           <p>© 2017 web vue-project</p>
@@ -25,11 +25,25 @@
 </template>
 
 <script>
-import {mapState,mapMutations} from 'vuex'
+import Main from './components/main'
 
   export default {
-	  methods: mapMutations(['open'])
-
+	  data(){
+      return {
+        show:false
+      }
+    },
+    methods: {
+      open(){
+        this.show=true
+      },
+      close(){
+        this.show=false
+      }
+    },
+    components:{
+      Main
+    }
     
   }
 </script>

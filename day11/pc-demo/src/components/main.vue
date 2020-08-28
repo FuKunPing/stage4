@@ -1,9 +1,11 @@
 <template>
     <div class='index-wrap'>
         <!-- 登录遮罩层 -->
-        <Dialog><Login></Login></Dialog>
+        <Dialog v-show="showLog" @close="close">
+          <Login></Login>
+        </Dialog>
         <!-- 购买的遮罩层 -->
-        <Dialog v-show='showBuy'>
+        <Dialog v-show="showBuy" @close="close">
           <div>{{info}}</div>
         </Dialog>
         <!-- main组件左侧产品信息和消息 -->
@@ -133,12 +135,22 @@ import Login from './Login'
           ]
         }
       },
-      methods: {
-        buyOne(title){
-          this.info=title;
-          this.showBuy=true;
+      props:{
+        showLog: {
+          type: Boolean,
+          default: false
         }
       },
+      methods: {
+        buyOne(title){
+          this.info = title;
+          this.showBuy = true
+        },
+        close(){
+          this.showBuy = false
+          this.$emit('close')
+        }
+  },
 
     //注册组件
       components:{

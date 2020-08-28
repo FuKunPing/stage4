@@ -1,7 +1,7 @@
 <template>
   <div>
       <transition name="drop">
-        <div class="dialog-wrap" v-show="show">
+        <div class="dialog-wrap">
         <!-- 遮罩层 -->
         <div class="dialog-cover"></div>
         <!-- 弹出框的动画效果 -->
@@ -15,14 +15,17 @@
 </template>
 
 <script>
-import {mapState,mapMutations} from 'vuex'
+// import {mapState,mapMutations} from 'vuex'
 
 export default {
-    computed: {
-        ...mapState(['show'])
-    },
+    // computed: {
+    //     ...mapState(['show'])
+    // },
     methods: {
-        ...mapMutations(['close'])
+        // ...mapMutations(['close'])
+        close(){
+            this.$emit('close')
+        }
     },
 }
 </script>
