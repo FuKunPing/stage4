@@ -1,0 +1,59 @@
+mysql命令连接数据库
+    1.cmd:输入mysql -u root -p进人mysql
+    2.创建数据库：create database 数据库名
+    3.进入数据库：use 数据库名
+    4.创建表结构：
+        create table 表名(
+            字段1  数据类型（长度），
+            字段2  数据类型（长度）
+        )
+        字符串的数据类型两种: char , varchar, varchar2
+        数字类型：int
+
+        create table stus(
+            id int(3),
+            name varchar(20),
+            birth date
+        );
+
+    CARD
+    5.向表中添加数据
+        insert into 表名 values (val1,val2,val3,...)
+        insert into stus values (1,'zhangsan',now());
+        insert into stus values (2,'zhangsan2',now());
+        insert into stus values (3,'zhangsan3',now());
+        insert into stus values (4,'zhangsan4',now());
+        insert into stus(birth,name,id) values (now(),'zhangsan5',5);
+
+    6.查询数据
+        select * from 表名
+        *代表的是通配符
+        select id,name from stus
+
+        有条件的查询某些数据
+        select * from stus where id=4;
+
+        select * from stus where id=4 or id=5;
+        
+        select * from stus where id=4 and id=5;
+
+        select * from stus where id!=4;
+
+    7.修改数据
+        update 表名 set key=val, key=val,...--默认修改所有数据
+
+        有条件的修改数据
+        update 表名 set key=val,key=val where 条件  
+
+        update stus set name='lisi' where id=1;
+        update stus set name='lisi',id=10 where id=1;
+
+    8.删除数据
+        delete from 表名 --默认删除表中的所有数据
+
+        有条件的删除数据
+        delete from 表名 where 条件
+
+
+node操作mysql
+    cnpm i mysql
