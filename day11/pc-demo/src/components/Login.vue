@@ -27,16 +27,16 @@
 </template>
 
 <script>
-import {mapMutations} from 'vuex'
+// import {mapMutations} from 'vuex'
 export default {
   data () {
       return {}
   },
   methods: {
-    ...mapMutations(['close']),
+    // ...mapMutations(['close']),
     msg(){
         alert('您输入的用户名或密码错误')
-        this.close();
+        // this.close();
     }
   },
   
