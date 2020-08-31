@@ -22,7 +22,6 @@ module.exports = {
     },
 
     entry:'./src/main.js',
-
     output: {
       path: __dirname+'/dist2',
       filename: '[name]-[hash:6].js'
@@ -44,7 +43,14 @@ module.exports = {
     module:{
         rules:[
             {
-                test:/\.(css|stylus|styl)$/,
+                test:/\.css$/,
+                use:[
+                    MiniCssExtractPlugin.loader,
+                    'css-loader'
+                ]
+            },
+            {
+                test:/\.(stylus|styl)$/,
                 use:[
                     MiniCssExtractPlugin.loader,
                     'css-loader',

@@ -24,7 +24,83 @@ qq音乐案例
     3.在main.js中引入各个模块并创建Vue实例对象,同时引入fastclick解决300ms
         延迟的问题
     
-    4.引入全局样式，
+    4.引入全局样式
+      import './common/stylus/index
+
+    5.App.vue
+      项目的根组件，其中包含3个部分：
+        header,tab,content
+          header对应m-header组件
+          tab对应tab组件，里面包含4个路由
+          第三部分为router-view，表示4个路由对应组件的渲染出口
+
+      在router.js中配置这4个路由
+    
+    6.推荐页
+    	1) 轮播图
+			-使用vant组件库安装依赖：
+				cnpm i vant -S
+				cnpm i babel-plugin-import -D
+			-将.babelrc文件修改为babelrc.config.js并修改其中内容：
+				"plugins": [
+					"@babel/plugin-transform-runtime",
+					['import', {
+						libraryName: 'vant',
+						libraryDirectory: 'es',
+						style: true
+					}]
+				]
+			-在main.js中引入轮播图模块:
+				import {Swipe,SwipeItem} from 'vant'
+				Vue.use(Swipe)
+				Vue.use(SwipeItem)
+			-在base文件夹中创建slider/Slider.vue轮播图组件
+				将素材中的slider代码复制进去将class='slider-group'的div标签改为van-slider,
+				同时修改其中的属性.将class='slider-item'的div标签改为van-slider-item
+			-在script中定义props属性用于接收调用者传递过来的数据pics,在van-slider-item中遍历
+				pics,最后在recommend朱建中引入slider组件并调用.
+			-获取数据：
+				在recommend组件创建成功时，发送ajax请求获取数据.
+				在created中调用methods定义的获取数据的方法,methods中定义获取数据的方法,调用API里封装的
+				发送请求的方法.
+				在api中新建recommed.js,用于发送推荐页数据的请求.
+					getSlider方法获取轮播图,使用axios发送异步请求并返回promise对象.
+					但是产生跨域问题(使用proxy代理),在webpack配置文件中的devServer选项中设置proxy选项
+					proxy:[{ 
+						context:["/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg"],
+						target:"https://c.y.qq.com/",
+						changeOrigin:true 
+       				 }]
+					修改后重启服务
+			-解析数据,返回轮播图数组,将其赋值给recommend.vue组件中的slider属性,在调用Slider.vue组件时
+				将slider属性传递给轮播图组件<Slider :pics='slider'></Slider>
+
+		2) 热门歌曲推荐		
+			请求地址：
+			https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg?picmid=1&rnd=0.8705905791581989&g_tk_new_20200303=5381&g_tk=5381&loginUin=0&hostUin=0&format=json&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq.json&needNewCode=0&categoryId=10000000&sortId=5&sin=0&ein=19
+			请求参数：{
+			picmid: 1
+			rnd: Math.random()
+			g_tk_new_20200303: 5381
+			g_tk: 5381
+			loginUin: 0
+			hostUin: 0
+			format: 'json'
+			inCharset: 'utf8'
+			outCharset: 'utf-8'
+			notice: 0
+			platform: 'yqq.json'
+			needNewCode: 0
+			categoryId: 10000000
+			sortId: 5
+			sin: 0
+			ein: 19
+			}
+		
+
+				
+
+
 
 
 

@@ -15,7 +15,6 @@ export default {
         {link:'/singer',text:'歌手'},
         {link:'/rank',text:'排行'},
         {link:'/search',text:'搜索'}
-
       ]
     }
   }
