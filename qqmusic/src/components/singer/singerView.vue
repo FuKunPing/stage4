@@ -1,39 +1,64 @@
 <template>
-	<div class="singer"> 
-    	<!-- <transition name='slide'>
-			<div class="listview">
-				<div class="list-group">1</div>
-				<div class="list-shortcut">2</div>
-			</div>
-    	</transition> -->
-		<SingerView></SingerView>
-	</div>
+    <Scroll class="listview">
+        <ul>
+            <!-- 歌手分类列表 -->
+            <li class="list-group" v-for='(singer,idx) in singerList' :key="idx">
+                <h2 class="list-group-title">{{singer.title}}</h2>
+                <!-- 歌手列表 -->
+                <ul>
+                    <li v-for='(item,i) in singer.singers' :key='i' class="list-group-item">
+                        <img :src="item.avatar" alt="" class="avatar">
+                        <span class="name">{{item.fname}}</span>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <div class="list-shortcut">
+            <ul>
+                <!-- <li v-for='(item,i) in singerList' :key="i">{{item.title[0]}}</li> -->
+                <li v-for='(key,i) in getIndex' :key="i">{{key}}</li>
+            </ul>
+        </div>
+    </Scroll>
 </template>
 
 <script>
-import SingerView from '../singer/singerView'
+import {getSingerList} from '../../api/singer.js'
+import Scroll from '../../base/scroll/Scroll'
 
 export default {
-	components:{
-		SingerView
-	}
-
+    data(){
+        return {
+            singerList:[]
+        }
+    },
+    methods: {
+      _getSingerList(){
+        getSingerList().then(data=>{
+            console.log(data);
+            this.singerList=data;
+        })
+      }
+    },  
+    created() {
+        this._getSingerList()
+    },
+    components:{
+      Scroll
+    },
+    computed: {
+        getIndex(){
+            return this.singerList.map(val=>{
+                return val.title[0]
+            })
+        }
+    },
 }
-
 </script>
 
-<style scoped lang="stylus">
+<style lang="stylus" scoped> 
 @import '~@common/stylus/variable'
-.singer
-  position fixed
-  top 88px
-  bottom 0
-  width 100%
-  .slide-enter-active, .slide-leave-active
-    transition all 0.5s
-  .slide-enter, .slide-leave-to
-    transform translateX(100%)
-  .listview
+.listview
     position relative
     width 100%
     height 100%
@@ -95,5 +120,5 @@ export default {
       display flex
       align-items center
       justify-content center
-      transform translateY(100%)
+      transform translateY(100%)    
 </style>

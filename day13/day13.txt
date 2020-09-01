@@ -1,42 +1,42 @@
 qq音乐案例
-  1. 项目搭建
-    新建package.json，.babelrc，.gitigore以及webpack配置文件
-    修改其中部分内容
-    安装相关的依赖
-    在项目根目录下新建public和src文件夹
-    在src下新建
-      api/  封装请求数据接口的代码
-      base/  通用的基础组件
-      common/ 静态资源文件(已提供)
-      components/ 各种组件
-      router/ 路由
-      store/  状态管理
-      App.vue
-      main.js
+  	1. 项目搭建
+		新建package.json，.babelrc，.gitigore以及webpack配置文件
+		修改其中部分内容
+		安装相关的依赖
+		在项目根目录下新建public和src文件夹
+		在src下新建
+		api/  封装请求数据接口的代码
+		base/  通用的基础组件
+		common/ 静态资源文件(已提供)
+		components/ 各种组件
+		router/ 路由
+		store/  状态管理
+		App.vue
+		main.js
 
 
-      master 主分支
-      v2 day08创建的分支（用户管理）
-      teacher,mine qqmusic分支
+		[master 主分支
+		v2 day08创建的分支（用户管理）
+		teacher,mine qqmusic分支]
 
-    2.将common文件夹内容复制进去，同时在common中新建js文件夹
+    2. 将common文件夹内容复制进去，同时在common中新建js文件夹
 
-    3.在main.js中引入各个模块并创建Vue实例对象,同时引入fastclick解决300ms
+    3. 在main.js中引入各个模块并创建Vue实例对象,同时引入fastclick解决300ms
         延迟的问题
     
-    4.引入全局样式
-      import './common/stylus/index
+    4. 引入全局样式
+       import './common/stylus/index
 
-    5.App.vue
-      项目的根组件，其中包含3个部分：
-        header,tab,content
-          header对应m-header组件
-          tab对应tab组件，里面包含4个路由
-          第三部分为router-view，表示4个路由对应组件的渲染出口
+    5. App.vue
+		项目的根组件，其中包含3个部分：
+			header,tab,content
+			header对应m-header组件
+			tab对应tab组件，里面包含4个路由
+			第三部分为router-view，表示4个路由对应组件的渲染出口
 
-      在router.js中配置这4个路由
+      		[在router.js中配置这4个路由]
     
-    6.推荐页
+    6. 推荐页
     	1) 轮播图
 			-使用vant组件库安装依赖：
 				cnpm i vant -S
@@ -76,27 +76,87 @@ qq音乐案例
 				将slider属性传递给轮播图组件<Slider :pics='slider'></Slider>
 
 		2) 热门歌曲推荐		
-			请求地址：
+			-请求地址：
 			https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg?picmid=1&rnd=0.8705905791581989&g_tk_new_20200303=5381&g_tk=5381&loginUin=0&hostUin=0&format=json&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq.json&needNewCode=0&categoryId=10000000&sortId=5&sin=0&ein=19
-			请求参数：{
-			picmid: 1
-			rnd: Math.random()
-			g_tk_new_20200303: 5381
-			g_tk: 5381
-			loginUin: 0
-			hostUin: 0
-			format: 'json'
-			inCharset: 'utf8'
-			outCharset: 'utf-8'
-			notice: 0
-			platform: 'yqq.json'
-			needNewCode: 0
-			categoryId: 10000000
-			sortId: 5
-			sin: 0
-			ein: 19
+			-请求参数：{
+				picmid: 1
+				rnd: Math.random()
+				g_tk_new_20200303: 5381
+				g_tk: 5381
+				loginUin: 0
+				hostUin: 0
+				format: 'json'
+				inCharset: 'utf8'
+				outCharset: 'utf-8'
+				notice: 0
+				platform: 'yqq.json'
+				needNewCode: 0
+				categoryId: 10000000
+				sortId: 5
+				sin: 0
+				ein: 19
 			}
+			-跨域请求使用proxy代理的方式，
+			proxy：{
+				context:[url,url,url],
+				target:"http://c.y.qq.com",
+				changeOrigin:true,
+				header:{
+					referer:"https://c.y.qq.com",
+                	host:"c.y.qq.com"
+				}
+			}
+			-在recommend.vue组件中调用recommend-list.vue组件,recommend-list组件创建成功后执行获取数据的方法,
+			该方法在methods中定义,实际获取数据的请求有recommend.js发送.获取到数据后,将数据解析并赋值给recommend-list组件中的数据.
+
+		3) 滚动效果
+			(vant组件库中的List组件（点击无法跳转）---不使用。)
+			我们使用better-scroll(1.15.2版本)组件。
+			因为滚动效果在其他地方也会多次使用，所以将滚动效果单独封装成一个独立的通用基础组件。
+			在src/base/scroll下新建文件Scroll.vue
+				安装模块： cnpm i better-scroll --save   (cnpm i better-scroll@1.15.2)
+			模板中只有一个插槽，定义initScroll方法初始化scroll对象，然后在mounted中调用初始化方法。
+			scroll对象必须在页面渲染成功后才可以成功创建，所以初始化方法需要写在this.$nextTick中，
+			以保证是在页面渲染结束后执行的。
+
+	7. 歌手页
+		歌手列表的数据  https://u.y.qq.com/cgi-bin/musics.fcg
+		-请求地址：/v8/fcg-bin/v8.fcg
+		-请求参数:{
+			g_tk:5381,
+			format:'json',
+			inCharset:'utf-8',
+			outCharset:'utf-8',
+			notice:0,
+			hostUin:0,
+			needNewCode:0,
+			platform:'yqq.json',
+			page:'list',
+			channel:'singer',
+			key:'all_all_all',
+			pagesize:100,
+			pagenum:1
+		}
+		-使用axios发送请求获取数据（配置dev.js）
+		-解析数据：
+			[
+				{
+					hot:{
+						title:"热门",
+						singers:[{},{},{}],
+
+					}
+				},
+				{	
+					A:{
+						title:"A",
+						singers:[{},{}]
+					}
+				}
+			]
+			<img class="singer_list__pic" onerror="this.src='//y.gtimg.cn/mediastyle/global/img/singer_300.png?max_age=2592000';this.onerror=null;" src="//y.gtimg.cn/music/photo_new/T001R150x150M0000025NhlN2yWrP4.jpg?max_age=2592000" alt="周杰伦">
 		
+
 
 				
 

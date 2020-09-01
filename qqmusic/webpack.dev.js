@@ -25,7 +25,7 @@ module.exports=merge(base,{
         hot:true,
         // 请求代理
         proxy:[{ 
-            context:["/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg","/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg"],
+            context:["/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg","/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg","/v8/fcg-bin/v8.fcg"],
             target:"https://c.y.qq.com/",
             changeOrigin:true,
             headers:{

@@ -1,6 +1,6 @@
 <template>
   <div class="recommend">
-    <div class="recommend-content">
+    <Scroll class="recommend-content">
       <!-- 轮播图 -->
       <div class="slider-wrapper">
         <Slider :pics='slider'></Slider>
@@ -10,7 +10,7 @@
         <h1 class="list-title">热门歌曲推荐</h1>
           <RecommList></RecommList>
       </div>
-    </div>
+    </Scroll>
   </div>
 </template>
 
@@ -18,6 +18,7 @@
 import Slider from '../../base/slider/Slider'
 import recomm from '../../api/recommend.js'
 import RecommList from './recommend-list'
+import Scroll from '../../base/scroll/Scroll'
 
 export default {
   data() {
@@ -27,7 +28,8 @@ export default {
   },
   components:{
     Slider,
-    RecommList
+    RecommList,
+    Scroll
   },
   created() {
     this._getSlider()
@@ -40,7 +42,7 @@ export default {
           console.log(err);
         })
     }
-  },
+  }
 }
 
 </script>
