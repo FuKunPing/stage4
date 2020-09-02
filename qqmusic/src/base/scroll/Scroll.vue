@@ -1,9 +1,7 @@
 <template>
-    <div ref="wrapper">
-        <div>   
+    <div ref="wrapper"> 
         <!-- 滚动的内容不固定，采用插槽来接收滚动的内容 -->
         <slot></slot>
-        </div>
     </div>
 </template>
 
