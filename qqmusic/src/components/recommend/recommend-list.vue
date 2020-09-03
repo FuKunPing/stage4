@@ -1,7 +1,7 @@
 <template>
     <div>
         <ul>
-            <li v-for='(d,i) in list' :key="i" class="item">
+            <li v-for='(d,i) in list' :key="i" class="item" @click="select(d)">
                 <div class="p-left"></div>
                 <div class="p-right"></div>
                 <div class="icon">
@@ -32,6 +32,10 @@ export default {
             }).catch(err=>{
                 console.log(object);
             })
+        },
+        select(d){
+            // 派发事件给父组件recommend
+            this.$emit('select',d)
         }
     },
     created() {

@@ -2,6 +2,7 @@
 // 开发环境
 let {merge} = require('webpack-merge')
 let base = require('./webpack.base.js')
+let axios =require('axios')
 
 // 文件合并
 module.exports=merge(base,{
@@ -34,8 +35,51 @@ module.exports=merge(base,{
             }
         }],
         before(app){
+            // 跳转到歌手页
             app.get('/singer/:id',(req,res)=>{
                 res.redirect('/singer')
+            }),
+            // 跳转到推荐页
+            app.get('/recommend/:dissid',(req,res)=>{
+                res.redirect('/recommend')
+            }),
+            // 处理recommend.js中发送的/getDiss请求来获取歌单的歌曲列表
+            app.get('/getDiss',(req,res)=>{
+                // 歌单歌曲的请求地址
+                let url = 'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg';
+                // 获取歌单id
+                let dissid=req.query.dissid;
+                // 歌单歌曲请求需要的参数
+                let data = {
+                    g_tk: 5381,
+                    format: 'json',
+                    inCharset: 'utf8',
+                    outCharset: 'utf-8',
+                    notice: 0,
+                    type: 1,
+                    json: 1,
+                    utf8: 1,
+                    onlysong: 0,
+                    new_format: 1,
+                    disstid: dissid,
+                    g_tk_new_20200303: 5381,
+                    platform: 'yqq.json',
+                    needNewCode: 0
+                };
+                // 向c.y.qq.com发送获取歌曲的请求
+                axios.get(url,{
+                    params:data,
+                    headers:{
+                        referer:`https://y.qq.com/n/yqq/playlist/${dissid}.html`,
+                        host:'y.qq.com'
+                    }
+                }).then(resData=>{
+                    // console.log(resData);
+                    res.send(resData.data.cdlist)
+                }).catch(err=>{
+                    // console.log(err);
+                    res.send('err')
+                })
             })
         }
     },

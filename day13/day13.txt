@@ -200,6 +200,15 @@ qq音乐案例
 		在songList中接收musicList绑定传递过来的数据songs。
 
 
+	9. 推荐页歌单的歌曲列表（歌单详情页）
+		点击推荐页的歌单，在详情页中显示该歌单中的歌曲列表。详情页依然使用musicList组件，所以只需要获取到对应数据，然后在调用musicList组件时将数据传递给musicList组件。
+		新建RecommendDetail.vue,配置相关路由,在recommend.vue中设置router-view
+
+
+		
+
+
+
 
 
 

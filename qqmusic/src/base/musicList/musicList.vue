@@ -131,6 +131,7 @@ export default {
     bottom 0
     width 100%
     background #fff
+    overflow hidden
     .song-list-wrapper
       padding 20px 30px
     .loading-container
