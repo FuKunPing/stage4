@@ -25,7 +25,8 @@ module.exports=merge(base,{
         // 开启热加载
         hot:true,
         // 请求代理
-        proxy:[{ 
+        proxy:[
+            { 
             context:[
                 "/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg",
                 "/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg",
@@ -40,7 +41,19 @@ module.exports=merge(base,{
                 referer:"https://c.y.qq.com",
                 host:"c.y.qq.com"
             }
-        }],
+        },
+        {
+            context: [
+              '/cgi-bin/musicu.fcg'
+            ],
+            target: 'https://u.y.qq.com',
+            changeOrigin: true,
+            headers: {
+              referer: "https://u.y.qq.com",
+              host: 'u.y.qq.com'
+            }
+          }
+    ],
         before(app){
             // 跳转到歌手页
             app.get('/singer/:id',(req,res)=>{

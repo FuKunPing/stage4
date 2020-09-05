@@ -1,22 +1,30 @@
 <template>
   <div class="search-box">
     <i class="icon-search"></i>
-    <input ref="query" v-model="query" placeholder="请输入歌手名或歌曲名" class="box"/>
-    <i class="icon-dismiss"></i>
+    <input ref="query" v-model="query" placeholder="请输入歌手名或歌曲名" class="box" @blur="cache"/>
+    <i class="icon-dismiss" @click="clear" v-show="query!=''"></i>
   </div>
 </template>
 
-<script>
+<script >
 
 export default {
   data() {
     return {
-      query:''
+      query: ""
+    }
+  },
+  methods: {
+    clear(){
+      this.query = ""
+    },
+    cache(){
+      this.$emit("cache",this.query)
     }
   },
   watch: {
     query(newVal){
-      // 监听query值的变化，将变化后的值传递给父组件
+      // 监听query值得变化，将变化后的值传递给父组件,派发事件
       this.$emit('queryChange',newVal)
     }
   },
