@@ -1,6 +1,7 @@
 // 获取排行榜的数据
 import axios from 'axios'
 
+// 获取排行榜的数据
 function getRankList(){
   let url = '/cgi-bin/musicu.fcg'
   let data = {

@@ -230,6 +230,51 @@ qq音乐案例
 		获取到数据后，先查看数据结构，然后解析数据，取需要的数据返回
 		rank.vue遍历数据(数据结构层次深，需要多次使用v-for)
 		最后引入Scroll，实现滚动
+
+	12. 播放功能
+		播放组件时一个公共组件，无论在哪个地方都可以播放，所以播放组件的状态必定是全局的
+		使用vuex来全局管理播放状态：
+		state中，定义状态
+			1. 播放/暂停 - playing: true/false
+			2. 播放列表 - playList: []
+				3. 当前播放索引 - currentIndex: -1
+				4. 播放模式 - playMode: 顺序(ORDER - 1), 循环(LOOP - 2), 随机(RANDOM - 3)
+				5. 播放形式 - fullScreen: true/false
+				6. 播放顺序列表 - orderList: []
+		getters中，定义对应获取状态的方法
+			1. 获取播放状态 - getPlaying
+			2. 获取播放列表 - getPlayList
+			3. 获取当前播放索引 - getCurrentIndex
+			4. 获取播放模式 - getPlayMode
+			5. 获取播放形式 - getFullScreen
+			6. 获取播放顺序列表 - getOrderList
+			7. 获取当前播放歌曲 - getCurrentSong
+			return state.playList[state.currentIndex] || {}
+		mutations中，设置对应的方法
+			1. 设置播放状态 - setPlaying
+			2. 设置播放列表 - setPlayList
+			3. 设置当前播放索引 - setCurrentIndex
+			4. 设置播放模式 - setPlayMode
+			5. 设置播放形式 - setFullScreen
+			6. 设置播放列表 - setOrderList
+		actions中，设置播放
+			selectPlay
+			当点击某首歌曲时，即开始播放该歌曲，需要修改多个数据：setPlaying，setPlayList，setCurrentIndex，setOrderList
+
+		新建components/player/player.vue作为播放组件
+			1. 全屏和迷你屏的切换
+			2. 迷你屏中图片，歌名，歌手小图标的显示
+			当前播放的歌曲的图片等等
+			3. 大屏中的背景图,中间的CD,返回按钮和歌曲信息,底部按钮
+			4. 歌曲的播放 audio标签
+			查看network获取歌曲资源地址
+			audio标签的一些属性和方法
+		新建components/progress-bar/progress-bar.vue 进度条 引入到player中
+			在player中传入percent给进度条
+				进度条接收并监听percent的改变,修改小圆点的位移和播放进度的长度
+				小圆点的拖动和进度条的点击事件
+		播放模式的选择
+				点击切换playMode的值
 		
 
 		
