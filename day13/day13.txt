@@ -232,15 +232,18 @@ qq音乐案例
 		最后引入Scroll，实现滚动
 
 	12. 播放功能
-		播放组件时一个公共组件，无论在哪个地方都可以播放，所以播放组件的状态必定是全局的
+		播放组件是一个公共组件，无论在哪个地方都可以播放，所以播放组件的状态必定是全局的
 		使用vuex来全局管理播放状态：
 		state中，定义状态
 			1. 播放/暂停 - playing: true/false
 			2. 播放列表 - playList: []
-				3. 当前播放索引 - currentIndex: -1
-				4. 播放模式 - playMode: 顺序(ORDER - 1), 循环(LOOP - 2), 随机(RANDOM - 3)
-				5. 播放形式 - fullScreen: true/false
-				6. 播放顺序列表 - orderList: []
+			3. 当前播放索引 - currentIndex: -1
+			4. 播放模式 - playMode: 
+			顺序(ORDER - 1)
+			循环(LOOP - 2)
+			随机(RANDOM - 0)
+			5. 播放形式 - fullScreen: true/false
+			6. 播放顺序列表 - orderList: []
 		getters中，定义对应获取状态的方法
 			1. 获取播放状态 - getPlaying
 			2. 获取播放列表 - getPlayList
@@ -261,20 +264,7 @@ qq音乐案例
 			selectPlay
 			当点击某首歌曲时，即开始播放该歌曲，需要修改多个数据：setPlaying，setPlayList，setCurrentIndex，setOrderList
 
-		新建components/player/player.vue作为播放组件
-			1. 全屏和迷你屏的切换
-			2. 迷你屏中图片，歌名，歌手小图标的显示
-			当前播放的歌曲的图片等等
-			3. 大屏中的背景图,中间的CD,返回按钮和歌曲信息,底部按钮
-			4. 歌曲的播放 audio标签
-			查看network获取歌曲资源地址
-			audio标签的一些属性和方法
-		新建components/progress-bar/progress-bar.vue 进度条 引入到player中
-			在player中传入percent给进度条
-				进度条接收并监听percent的改变,修改小圆点的位移和播放进度的长度
-				小圆点的拖动和进度条的点击事件
-		播放模式的选择
-				点击切换playMode的值
+  play.vue组件
 		
 
 		

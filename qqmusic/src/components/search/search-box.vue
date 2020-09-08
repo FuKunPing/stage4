@@ -7,6 +7,7 @@
 </template>
 
 <script >
+import bus from '../../base/bus/bus.js'
 
 export default {
   data() {
@@ -27,6 +28,13 @@ export default {
       // 监听query值得变化，将变化后的值传递给父组件,派发事件
       this.$emit('queryChange',newVal)
     }
+  },
+  mounted() {
+    // 挂载后监听数据的变化
+    bus.$on("chooseKey",data=>{
+      // 将数据赋值给query属性
+      this.query = data
+    })
   },
 };
 </script>
