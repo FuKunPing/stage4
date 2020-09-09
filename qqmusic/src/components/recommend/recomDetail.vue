@@ -1,6 +1,6 @@
 <template>
-  <transition name='slide'>
-    <MusicList :title="diss.name" :avatar='diss.imgurl' :songs='songs'></MusicList>
+  <transition name="slide">
+    <MusicList :title="diss.name" :avatar="diss.imgurl" :songs="songs"></MusicList>
   </transition>
 </template>
 
@@ -8,18 +8,22 @@
 import { mapGetters } from 'vuex'
 import MusicList from '../../base/musicList/musicList'
 import recom from '../../api/recommend'
+import Song from '../../common/js/Song'
 
 export default {
-  data(){
+  data() {
     return {
-      songs:[]
+      songs: []
     }
   },
   methods: {
     _getDissSongs(){
-      // console.log(this.diss);
+      // console.log(this.diss)
       recom.getDissSongs(this.diss.dissid).then(songs=>{
-        this.songs=songs
+        // 遍历songs，将其封装成Song对象然后一个个添加进this.songs中
+        songs.forEach(val=>{
+          this.songs.push(new Song(val,""))
+        })
       })
     }
   },
@@ -29,10 +33,10 @@ export default {
   computed: {
     ...mapGetters(['getSingerInfo']),
     diss(){
-      return this.getSingerInfo;
+      return this.getSingerInfo
     }
   },
-  components:{
+  components: {
     MusicList
   }
 }

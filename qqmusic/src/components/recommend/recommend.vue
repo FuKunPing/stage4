@@ -1,19 +1,19 @@
 <template>
   <div class="recommend">
-    <Scroll class="recommend-content">
+    <scroll ref="scroll" class="recommend-content">
       <div>
         <!-- 轮播图 -->
         <div class="slider-wrapper">
-          <Slider :pics='slider'></Slider>
+          <Slider :pics="slider"></Slider>
         </div>
         <!-- 热门歌曲列表 -->
         <div class="recommend-list">
           <h1 class="list-title">热门歌曲推荐</h1>
-            <RecommList @select='select'></RecommList>
+          <RecommList @select="select"></RecommList>
         </div>
       </div>
-    </Scroll>
-    <transition name='slide'>
+    </scroll>
+    <transition name="slide">
       <router-view></router-view>
     </transition>
   </div>
@@ -21,7 +21,7 @@
 
 <script>
 import Slider from '../../base/slider/Slider'
-import recomm from '../../api/recommend.js'
+import recomm from '../../api/recommend'
 import RecommList from './recommend-list'
 import Scroll from '../../base/scroll/Scroll'
 import { mapMutations } from 'vuex'
@@ -29,42 +29,41 @@ import { mapMutations } from 'vuex'
 export default {
   data() {
     return {
-      slider:[]
+      slider: [],
+      list: []
     }
-  },
-  components:{
-    Slider,
-    RecommList,
-    Scroll
   },
   created() {
     this._getSlider()
   },
   methods: {
-    ...mapMutations(['setSingerInfo']),
+    ...mapMutations(["setSingerInfo"]),
     _getSlider(){
-        recomm.getSlider().then(data=>{
-          this.slider=data;
-        }).catch(err=>{
-          console.log(err);
-        })
+      recomm.getSlider().then(data=>{
+        this.slider = data
+      }).catch(err=>{
+        console.log(err)
+      })
     },
     select(d){
-      // console.log('recommend.vue:',d);
       // 获取歌单id，图片，名称
       let {
-        dissid,
-        imgurl,
-        creator:{name} 
-        }= d;
-      console.log(dissid,imgurl,name);
+        dissid, 
+        imgurl, 
+        creator:{name}
+      } = d;
       // 将数据设置到状态管理中
       this.setSingerInfo({
-        singer:{dissid,imgurl,name}
+        singer: {dissid,imgurl,name}
       })
       // 路由跳转
       this.$router.push(`/recommend/${dissid}`)
     }
+  },
+  components: {
+    Slider,
+    RecommList,
+    Scroll
   }
 }
 </script>

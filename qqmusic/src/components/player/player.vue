@@ -1,23 +1,27 @@
 <template>
-  <div class="player">
+  <div class="player" v-if="getPlayList.length>0">
     <div class="normal-player" v-show="getFullScreen">
       <div class="background">
-        <img width="100%" height="100%" />
+        <img :src="imgUrl" width="100%" height="100%" />
       </div>
       <!-- 返回按钮和歌曲信息 -->
       <div class="top">
         <div class="back" @click="toggle">
           <i class="icon-back"></i>
         </div>
-        <h1 class="title"></h1>
-        <h2 class="subtitle"></h2>
+        <h1 class="title">
+          {{getCurrentSong.songname}}
+        </h1>
+        <h2 class="subtitle">
+          {{getCurrentSong.singer}}
+        </h2>
       </div>
       <!-- 中间播放的CD -->
       <div class="middle">
         <div class="middle-l">
           <div class="cd-wrapper">
-            <div class="cd">
-              <img class="image" src alt />
+            <div class="cd" :class="rotateCD">
+              <img :src="imgUrl" class="image" alt />
             </div>
           </div>
         </div>
@@ -26,16 +30,16 @@
       <div class="bottom">
         <div class="operators">
           <div class="icon i-left">
-            <i class="icon-sequence"></i>
+            <i :class="iconMode" @click="changeMode"></i>
           </div>
           <div class="icon i-left">
-            <i class="icon-prev"></i>
+            <i class="icon-prev" @click="prev"></i>
           </div>
           <div class="icon i-center">
-            <i class="icon-play"></i>
+            <i :class="iconChange" @click="togglePlay"></i>
           </div>
           <div class="icon i-right">
-            <i class="icon-next"></i>
+            <i class="icon-next" @click="next"></i>
           </div>
           <div class="icon i-right">
             <i class="icon-not-favorite"></i>
@@ -45,13 +49,20 @@
     </div>
     <div class="mini-player" v-show="!getFullScreen" @click="toggle">
       <div class="icon">
-        <img width="40" height="40" />
+        <img :src="imgUrl" width="40" height="40" />
       </div>
       <div class="text">
-        <h2 class="name"></h2>
-        <p class="desc"></p>
+        <h2 class="name">
+          {{getCurrentSong.songname}}
+        </h2>
+        <p class="desc">
+          {{getCurrentSong.singer}}
+        </p>
       </div>
-      <div class="control"></div>
+      <div class="control">
+        <i class="icon-play-mini" v-show="!getPlaying" @click.stop="togglePlay"></i>
+        <i class="icon-pause-mini" v-show="getPlaying" @click.stop="togglePlay"></i>
+      </div>
       <div class="control">
         <i class="icon-playlist"></i>
       </div>
@@ -62,6 +73,8 @@
 
 <script>
 import {mapMutations,mapState,mapGetters} from 'vuex'
+import {getPlayKey} from '../../api/play'
+
 export default {
   data() {
     return {
@@ -69,15 +82,149 @@ export default {
   },
   computed: {
     ...mapGetters([
+      'getPlaying',
       'getFullScreen',
-      'getCurrentSong'
-    ])
+      'getCurrentSong',
+      'getPlayList',
+      'getCurrentIndex',
+      'getPlayMode',
+      'getOrderList'
+    ]),
+    imgUrl(){
+      let id = this.getCurrentSong.albummid
+      return `http://y.gtimg.cn/music/photo_new/T002R300x300M000${id}_1.jpg?max_age=2592000`
+    },
+    iconChange(){
+      return this.getPlaying?"icon-pause" : "icon-play"
+    },
+    rotateCD(){
+      return this.getPlaying ? "play" : "play pause"
+    },
+    iconMode(){
+      return this.getPlayMode==1? "icon-sequence" : this.getPlayMode==2? "icon-loop": "icon-random"
+    }
   },
   methods: {
-    ...mapMutations(['setFullScreen']),
+    ...mapMutations([
+      'setFullScreen',
+      'setPlaying',
+      'setCurrentIndex',
+      'setPlayMode',
+      'setPlayList'
+    ]),
     toggle(){
       this.setFullScreen({
         fullScreen: !this.getFullScreen
+      })
+    },
+    togglePlay(){
+      this.setPlaying({
+        playing: !this.getPlaying
+      })
+      if(this.getPlaying){
+        this.$refs.audio.play()
+      }else{
+        this.$refs.audio.pause()
+      }
+    },
+    prev(){
+      // 上一首，就是当前播放歌曲的下标减一
+      let index = this.getCurrentIndex // 获取当前播放的下标减一后的结果
+      index--
+      if(index<0){
+        // 如果index为-1(当前播放的是第一首，上一首就是最后一首)
+        index = this.getPlayList.length-1
+      }
+      let songs = this.getPlayList
+      // 获取播放地址
+      getPlayKey(songs[index].songmid).then(purl=>{
+        purl = 'http://ws.stream.qqmusic.qq.com/'+purl
+        this.$set(songs[index],'url',purl)
+        this.setCurrentIndex({
+          currentIndex: index
+        })
+      }).catch(err=>{
+        this.setCurrentIndex({
+          currentIndex: index
+        })
+        alert('获取资源失败')
+        // 没找到资源，自动调用上一首
+        this.prev()
+      })
+    },
+    next(){
+      let index = this.getCurrentIndex // 获取当前播放的下标加1后的结果
+      index++
+      if(index>=this.getPlayList.length-1){
+        // 如果index的值为数组的下标最大值，则表示当前是最后一首歌,下标重置为0
+        index = 0
+      }
+      let songs = this.getPlayList
+      // 获取播放地址
+      getPlayKey(songs[index].songmid).then(purl=>{
+        purl = 'http://ws.stream.qqmusic.qq.com/'+purl
+        this.$set(songs[index],'url',purl)
+        this.setCurrentIndex({
+          currentIndex: index
+        })
+      }).catch(err=>{
+        this.setCurrentIndex({
+          currentIndex: index
+        })
+        alert('获取资源失败')
+        // 没找到资源，自动调用上一首
+        this.next()
+      })
+    },
+    changeMode(){
+      // 获取当前模式(顺序-1，循环-2，随机-0)
+      let mode = this.getPlayMode
+      mode = (mode+1) % 3
+      // 将mode的值重新设置进playMode中
+      this.setPlayMode({
+        playMode: mode
+      })
+      let list = [];
+      // 判断播放模式
+      if(mode==1){ // 顺序播放
+        list = this.getOrderList
+        console.log('1',list)
+      }else{ // 随机播放
+        // 将播放顺序打乱
+        list = this._randomList(this.getOrderList)
+        console.log('2',list)
+      }
+      // 重置下标
+      this._resetCurrentIndex(list)
+      // 将排序后的歌曲列表放入播放列表中
+      this.setPlayList({
+        playList: list
+      })
+    },
+    _randomList(list){
+      // 该方法用于将顺序的歌曲列表打乱
+      let songs = [...list]; // 复制一份新的数组
+      // 打乱顺序
+      for(let i=0;i<songs.length;i++){
+        let r = Math.floor(Math.random()*songs.length)
+        let temp = songs[i]
+        songs[i] = songs[r]
+        songs[r] = temp
+      }
+      return songs
+    },
+    _resetCurrentIndex(list){
+      // 重置当前播放歌曲的下标
+      // 从list中找到当前正在播放的歌曲
+      console.log(list)
+      let song = this.getCurrentSong
+      let index = list.findIndex(val=>{
+        // console.log(`${val.songmid}==${song.songmid}`)
+        return val.songmid==song.songmid
+      })
+      // 设置当前播放歌曲的新的下标
+      this.setCurrentIndex({
+        currentIndex: index
       })
     }
   },
@@ -85,7 +232,11 @@ export default {
     getCurrentSong(){
       // 监听当前歌曲是否发生变化，当发生变化时，调用，播放
       this.$nextTick(()=>{
-
+        this.$refs.audio.volume = 0.2
+        this.$refs.audio.play()
+        this.setPlaying({
+          playing: true
+        })
       })
     }
   }

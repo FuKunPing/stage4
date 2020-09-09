@@ -1,7 +1,7 @@
 <template>
   <div class="song-list">
     <ul>
-      <li v-for='(song,i) in songs' :key="i" class="item">
+      <li v-for="(song,i) in songs" :key="i" class="item" @click="selectSong(i)">
         <div class="content">
           <h2 class="name">{{song.songname}}</h2>
           <p class="desc">{{desc(song)}}</p>
@@ -13,24 +13,23 @@
 
 <script>
 export default {
-  props:{
-    songs:{
-      type:Array,
+  props: {
+    songs: {
+      type: Array,
       default(){
         return []
       }
     }
   },
   methods: {
+    selectSong(index){
+      this.$emit('selectSong',index)
+    },
     desc(song){
       let singer = song.singer
       let albumname = song.albumname
-      let str = ''
-      singer.forEach(val=>{
-        str += `/${val.name}`
-      })
-      str = str.slice(1)
-      str = `${str} ~ ${albumname}`
+      
+      let str = `${singer} ~ ${albumname}`
       return str
     }
   },

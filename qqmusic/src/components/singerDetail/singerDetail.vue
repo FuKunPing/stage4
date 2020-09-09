@@ -1,27 +1,27 @@
 <template>
   <div class='singer-detail'>
-    <MusicList :title="singer.fname" :avatar="singer.avatar" :songs='songs'></MusicList>
+    <MusicList :title="singer.fname" :avatar="singer.avatar" :songs="songs"></MusicList>
   </div>
 </template>
 
 <script>
 import MusicList from '../../base/musicList/musicList'
-import {mapGetters} from 'vuex'
 import {getSongList} from '../../api/singer'
+import {mapGetters} from 'vuex'
 import Song from '../../common/js/Song'
 
 export default {
   data() {
     return {
-      songs:[]  
+      songs: []
     }
   },
   methods: {
     _getSongList(){
       getSongList(this.singer.fid).then(list=>{
-        console.log(list)
+        // console.log(list)
         list.forEach(val=>{
-          this.songs.push(new Song(val.musicData))
+          this.songs.push(new Song(val.musicData,""))
         })
       })
     }

@@ -4,57 +4,78 @@
       <i class="icon-back"></i>
     </div>
     <h1 class="title">{{title}}</h1>
-    <div class="bg-image" :style="bgImg" ref='bgImg'>
+    <div class="bg-image" :style="bgImg" ref="bgImg">
       <div class="filter"></div>
-    </div> 
-    <Scroll class="list" ref='list'>
+    </div>
+    <scroll class="list" ref="list">
       <div class="song-list-wrapper">
-      <SongList :songs='songs'></SongList>
+        <song-list :songs="songs" @selectSong="selectSong"></song-list>
       </div>
-    </Scroll>
+    </scroll>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 import SongList from '../songList/songList'
 import Scroll from '../scroll/Scroll'
+import { mapActions,mapGetters } from 'vuex'
+import {getPlayKey} from '../../api/play'
 
 export default {
   methods: {
+    ...mapActions(['setPlaySong']),
     back(){
       this.$router.back()
+    },
+    selectSong(index){
+      getPlayKey(this.songs[index].songmid).then(purl=>{
+        // 歌曲播放地址
+        purl = 'http://ws.stream.qqmusic.qq.com/'+purl
+        // 将地址添加到当前歌曲的url属性中
+        this.$set(this.songs[index],'url',purl)
+        // 设置播放歌曲列表以及播放的下标
+        this.setPlaySong({
+          playList: this.songs,
+          currentIndex: index
+        })
+      }).catch(err=>{
+        console.log(err)
+        alert('获取歌曲资源失败')
+      })
+      
     }
   },
   props:{
-    title:{ //标题名称
-      type:String,
-      default:''
+    title: { // 标题名称
+      type: String,
+      default: ""
     },
-    avatar:{ //背景图的地址
-      type:String,
-      default:''
+    avatar: { // 背景图的地址
+      type: String,
+      default: ""
     },
-    songs:{ //歌曲列表
-      type:Array,
+    songs: { // 歌曲列表
+      type: Array,
       default(){
         return []
       }
     }
   },
   computed: {
+    ...mapGetters(['getCurrentSong']),
     bgImg(){
-      return `background-image:url(${this.avatar})`
+      return `background-image: url(${this.avatar})`
     }
-  },
-  components:{
-    SongList,
-    Scroll
   },
   mounted() {
     // 设置挂载成功后的list的top
-    console.log(this.$refs.list);
-    this.$refs.list.$el.style.top=this.$refs.bgImg.clientHeight+'px';
+    // console.log(this.$refs.list)
+    this.$refs.list.$el.style.top = this.$refs.bgImg.clientHeight+'px'
   },
+  components: {
+    SongList,
+    Scroll
+  }
 }
 </script>
 

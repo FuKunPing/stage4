@@ -46,9 +46,14 @@ function getPlayKey(songmid) {
   return axios.get(url, {
     params: data
   }).then(res => {
-    console.log(res.data.req_0.data.midurlinfo[0].purl)
+    let purl = res.data.req_0.data.midurlinfo[0].purl
+    if(purl==''){
+      return Promise.reject('获取资源失败')
+    }else{
+      return Promise.resolve(purl)
+    }
   }).catch(err => {
-    console.log(err)
+    return Promise.reject(err)
   })
 }
 
