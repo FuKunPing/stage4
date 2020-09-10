@@ -17,17 +17,48 @@
         </h2>
       </div>
       <!-- 中间播放的CD -->
-      <div class="middle">
-        <div class="middle-l">
+      <div class="middle" @touchstart="lyricStart" @touchmove="lyricMove" @touchend="lyricEnd">
+        <!-- CD -->
+        <div class="middle-l" ref="cd">
           <div class="cd-wrapper">
             <div class="cd" :class="rotateCD">
               <img :src="imgUrl" class="image" alt />
             </div>
           </div>
         </div>
+        <!-- 滚动的歌词 -->
+        <Scroll class="middle-r" ref="lyricList">
+          <div class="lyric-wrapper">
+            <div v-if="hasLyric">
+              <div v-for="(line,i) in currentLyric.lines" :key="i" :class="{text: true,current: currentLine==i}" ref="lyricLines">
+                {{line.txt}}
+              </div>
+            </div>
+            <div v-else class="text current">
+              没有找到歌词
+            </div>
+          </div>
+        </Scroll>
       </div>
       <!-- 底部的按钮 -->
       <div class="bottom">
+        <!-- 标记点 -->
+        <div class="dot-wrapper">
+          <div :class="{dot:true,active: currentShow=='CD'}"></div>
+          <div :class="{dot:true,active: currentShow=='lyric'}"></div>
+        </div>
+        <!-- 进度条 -->
+        <div class="progress-wrapper">
+          <div class="time time-l">
+            {{formatCurrentTime}}
+          </div>
+          <div class="progress-bar-wrapper">
+            <progress-bar :percent="percent" @changePercent="changePercent"></progress-bar>
+          </div>
+          <div class="time time-r">
+            {{duration}}
+          </div>
+        </div>
         <div class="operators">
           <div class="icon i-left">
             <i :class="iconMode" @click="changeMode"></i>
@@ -67,17 +98,28 @@
         <i class="icon-playlist"></i>
       </div>
     </div>
-    <audio :src="getCurrentSong.url" ref="audio"></audio>
+    <audio :src="getCurrentSong.url" ref="audio" @timeupdate="timeupdate" @ended="playEnd"></audio>
   </div>
 </template>
 
 <script>
 import {mapMutations,mapState,mapGetters} from 'vuex'
 import {getPlayKey} from '../../api/play'
+import ProgressBar from "../progress-bar/progress-bar"
+import { getLyric } from '../../api/lyric'
+import {Base64} from 'js-base64'
+import LyricParser from 'lyric-parser'
+import Scroll from '../../base/scroll/Scroll'
 
 export default {
   data() {
     return {
+      currentTime: 0, // 当前播放的时间
+      currentLyric: {}, // 当前歌曲的歌词
+      currentLine: 0, // 当前歌词的行数
+      playingLyric: "", // 当前播放的歌词
+      currentShow: "CD", // 当前显示的界面
+      touches: {} // 记录触摸事件
     }
   },
   computed: {
@@ -100,8 +142,31 @@ export default {
     rotateCD(){
       return this.getPlaying ? "play" : "play pause"
     },
+    duration(){
+      // 获取当前歌曲的总时间
+      let interval = this.getCurrentSong.interval
+      let m = Math.floor(interval / 60)
+      let s = interval%60
+      s = s<10? '0'+s : s;
+      return `${m}:${s}`
+    },
     iconMode(){
       return this.getPlayMode==1? "icon-sequence" : this.getPlayMode==2? "icon-loop": "icon-random"
+    },
+    formatCurrentTime(){
+      let m = Math.floor(this.currentTime/60)
+      let s = this.currentTime%60
+      s = s<10? `0${s}`:s
+      return `${m}:${s}`
+    },
+    percent(){
+      // 获取当前播放的进度比例
+      return this.currentTime / this.getCurrentSong.interval
+    },
+    hasLyric(){
+      // 判断有没有歌词：
+      // currentLyric中有lines属性，且该属性的长度大于0
+      return this.currentLyric.lines && this.currentLyric.lines.length>0
     }
   },
   methods: {
@@ -121,11 +186,7 @@ export default {
       this.setPlaying({
         playing: !this.getPlaying
       })
-      if(this.getPlaying){
-        this.$refs.audio.play()
-      }else{
-        this.$refs.audio.pause()
-      }
+      
     },
     prev(){
       // 上一首，就是当前播放歌曲的下标减一
@@ -188,11 +249,11 @@ export default {
       // 判断播放模式
       if(mode==1){ // 顺序播放
         list = this.getOrderList
-        console.log('1',list)
+        // console.log('1',list)
       }else{ // 随机播放
         // 将播放顺序打乱
         list = this._randomList(this.getOrderList)
-        console.log('2',list)
+        // console.log('2',list)
       }
       // 重置下标
       this._resetCurrentIndex(list)
@@ -216,7 +277,7 @@ export default {
     _resetCurrentIndex(list){
       // 重置当前播放歌曲的下标
       // 从list中找到当前正在播放的歌曲
-      console.log(list)
+      // console.log(list)
       let song = this.getCurrentSong
       let index = list.findIndex(val=>{
         // console.log(`${val.songmid}==${song.songmid}`)
@@ -226,17 +287,174 @@ export default {
       this.setCurrentIndex({
         currentIndex: index
       })
+    },
+    timeupdate(e){
+      this.currentTime = Math.floor(e.target.currentTime)
+    },
+    changePercent(percent){
+      // 接收传递回来的进度百分比
+      // 修改audio的当前播放时间
+      // 当前时间=百分比*总时间
+      let currentTime = percent * this.getCurrentSong.interval
+      // 修改音乐的当前播放时间
+      this.$refs.audio.currentTime = currentTime
+      // 修改歌词的播放时间
+      this.currentLyric.seek(currentTime*1000)
+      this.setPlaying({
+        playing: true
+      })
+    },
+    playEnd(){
+      // 播放结束，开始播放下一首
+      // 首先要判断是不是循环播放
+      if(this.getPlayMode==2){
+        // 循环播放，重置播放时间
+        this.$refs.audio.currentTime = 0
+        // 重置歌词
+        this.currentLyric.stop()
+        this.currentTime = 0
+        this.currentLine = 0
+        this.currentLyric.play()
+        // 继续播放原歌曲
+        this.$refs.audio.play()
+        return 
+      }
+      // 不是循环播放
+      this.next()
+    },
+    _getLyric(){
+      getLyric(this.getCurrentSong.songmid).then(data=>{
+        // 解码歌词
+        let lyric = Base64.decode(data)
+        this.currentLyric = new LyricParser(lyric,this._handler)
+        // 当歌曲播放时，歌词也同步播放
+        if(this.getPlaying){
+          this.currentLyric.play()
+        }
+      })
+    },
+    _handler({lineNum,txt}){
+      // 获取当前播放的行数和歌词
+      this.currentLine = lineNum
+      this.playingLyric = txt
+      // 歌词滚动
+      if(lineNum>5){
+        let ele = this.$refs.lyricLines[lineNum-5] // 滚动到的元素
+        this.$refs.lyricList.scrollToElement(ele)
+      }else{
+        this.$refs.lyricList.scrollToTop()
+      }
+    },
+    lyricStart(e){
+      // 开始触摸
+      this.touches.start = true
+      // 记录触摸点
+      this.touches.startX = e.touches[0].pageX
+      this.touches.startY = e.touches[0].pageY
+    },
+    lyricMove(e){
+      // 判断是否开始触摸
+      if(!this.touches.start){
+        return ;
+      }
+      // 设置滑动状态
+      this.touches.isMove = true
+      // 获取滑动的距离=当前坐标-开始坐标
+      let distanceX = e.touches[0].pageX - this.touches.startX
+      let distanceY = e.touches[0].pageY - this.touches.startY
+      // 判断是不是上下滑动
+      if(Math.abs(distanceY)>Math.abs(distanceX)){
+        return 
+      }
+      // 滚动的偏移量
+      // 偏移量只有两种情况：
+      // 1. 显示CD页，歌词不偏移，0
+      // 2. 显示歌词页，歌词偏移，偏移的距离就是窗口的宽度
+      let left  = this.currentShow=='CD' ? 0 : -window.innerWidth
+      let offsetWidth = Math.min(
+        0,
+        Math.max(-window.innerWidth,left+distanceX)
+      )
+      // 歌词的移动
+      this.$refs.lyricList.$el.style.transform = `translateX(${offsetWidth}px)`
+      // 滑动的距离比例
+      this.touches.percent = Math.abs(offsetWidth/window.innerWidth)
+      // 设置透明度
+      this.$refs.cd.style.opacity = 1 - this.touches.percent
+    },
+    lyricEnd(e){
+      // 触摸结束
+      this.touches.start = false
+      // 滑动两种情况：向左，向右
+      // 向左，cd隐藏，歌词显示
+      if(!this.touches.isMove){
+        return ;
+      }
+      this.touches.isMove = false
+      let offsetWidth,opacity;
+      // 当移动的比例超过0.2的时候，切换
+      if(this.currentShow=='CD'){
+        // 当前在cd页，滑动超过0.2
+        if(this.touches.percent>0.2){
+          // 划过去
+          offsetWidth = -window.innerWidth
+          // 透明度为0，隐藏cd页
+          opacity = 0
+          // 设置当前显示的是lyric
+          this.currentShow = 'lyric'
+        }else{
+          // 滑动距离不够，不移动
+          offsetWidth = 0
+          opacity = 1
+        }
+      }else{
+        // 当前在歌词页
+        if(this.touches.percent<0.8){
+          offsetWidth = 0
+          opacity = 1
+          this.currentShow = 'CD'
+        }else{
+          offsetWidth = -window.innerWidth
+          opacity = 0
+        }
+      }
+      // 设置最终样式
+      this.$refs.lyricList.$el.style.transform = `translateX(${offsetWidth}px)`
+      this.$refs.cd.style.opacity = opacity
     }
+  },
+  components: {
+    ProgressBar,
+    Scroll
   },
   watch: {
     getCurrentSong(){
       // 监听当前歌曲是否发生变化，当发生变化时，调用，播放
+      if(this.currentLyric.lines){
+        // 有歌词的时候
+        this.currentLyric.stop() // 停止上一首歌词的播放
+        this.currentTime = 0 // 重置歌词播放的时间
+        this.currentLine = 0 // 重置歌词的行数
+      }
       this.$nextTick(()=>{
         this.$refs.audio.volume = 0.2
         this.$refs.audio.play()
+        this._getLyric()
         this.setPlaying({
           playing: true
         })
+      })
+    },
+    getPlaying(){
+      this.$nextTick(()=>{
+        // 歌词暂停或继续
+        this.currentLyric.togglePlay()
+        // 歌曲暂停或继续
+        if(this.getPlaying){
+          this.$refs.audio.play()
+        }else{
+          this.$refs.audio.pause()
+        }
       })
     }
   }

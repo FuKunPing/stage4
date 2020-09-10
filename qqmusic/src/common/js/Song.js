@@ -8,12 +8,13 @@ songname 歌曲名称
 singer 唱歌的人
 */
 export default class Song {
-  constructor({albummid,albumname,songmid,songname,singer},url){
+  constructor({albummid,albumname,songmid,songname,singer,interval},url){
     this.albummid = albummid
     this.albumname = albumname
     this.songmid = songmid
     this.songname = songname
     this.singer = format(singer)
+    this.interval = interval
     this.url = url
   }
 }

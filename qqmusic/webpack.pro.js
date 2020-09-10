@@ -1,9 +1,9 @@
+// 生产环境
 
-//生产环境
 let {merge} = require('webpack-merge')
-let base = require('./webpack.base.js')
+let base = require('./webpack.base')
 
-module.exports=merge(base,{
-    mode:"production",
-    devtool:"source-map"
+module.exports = merge(base, {
+  mode: "production",
+  devtool: "source-map"
 })

@@ -1,39 +1,31 @@
 <template>
-	<div class="singer"> 
-    	<!-- <transition name='slide'>
-			<div class="listview">
-				<div class="list-group">1</div>
-				<div class="list-shortcut">2</div>
-			</div>
-    	</transition> -->
-		<SingerView @select="select"></SingerView>
-    <transition name='slide'>
+  <div class="singer">
+    <singer-view @select="select"></singer-view>
+    <transition name="slide">
       <router-view></router-view>
     </transition>
-	</div>
+  </div>
 </template>
 
 <script>
-import SingerView from '../singer/singerView'
+import SingerView from './singerView'
 import {mapMutations} from 'vuex'
-
 export default {
   methods: {
-    ...mapMutations(['setSingerInfo']),
+    ...mapMutations(["setSingerInfo"]),
     select(singer){
-      console.log(singer);
       // 设置状态
-      this.setSingerInfo({singer});
+      this.setSingerInfo({
+        singer
+      })
       // 编程式导航跳转路由
       this.$router.push(`/singer/${singer.fid}`)
     }
   },
-	components:{
-		SingerView
-	}
-
+  components: {
+    SingerView
+  }
 }
-
 </script>
 
 <style scoped lang="stylus">

@@ -21,6 +21,7 @@ export default {
       // console.log(this.diss)
       recom.getDissSongs(this.diss.dissid).then(songs=>{
         // 遍历songs，将其封装成Song对象然后一个个添加进this.songs中
+        console.log(songs)
         songs.forEach(val=>{
           this.songs.push(new Song(val,""))
         })

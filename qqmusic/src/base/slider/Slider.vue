@@ -2,8 +2,8 @@
   <div class="slider">
     <!-- 轮播图基础组件 -->
     <van-swipe class="my-swipe slider-group" :autoplay="3000" indicator-color="white">
-      <van-swipe-item v-for='(p,i) in pics' :key="i" class="slider-item">
-          <img :src="p.picUrl" alt="">
+      <van-swipe-item v-for="(p,i) in pics" :key="i" class="slider-item">
+        <img :src="p.picUrl" alt="">
       </van-swipe-item>
     </van-swipe>
   </div>

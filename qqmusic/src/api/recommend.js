@@ -59,10 +59,11 @@ function getDissSongs(dissid){
           mid: albummid // 专辑mid
         }, 
         singer, // 歌手
+        interval, // 歌曲的总秒数
         name: songname, // 歌曲名
         mid: songmid // 歌曲的mid
       } = val
-      data.push({albumname,albummid,singer,songname,songmid})
+      data.push({albumname,albummid,singer,songname,songmid,interval})
     })
     return Promise.resolve(data)
   }).catch(err=>{

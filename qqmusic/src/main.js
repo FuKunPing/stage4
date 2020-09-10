@@ -1,25 +1,23 @@
 import Vue from 'vue'
 import router from './router/router'
 import store from './store/store'
-import App from './App.vue'
+import App from './App'
 
 // 解决移动端点击有300ms延迟的问题
 import fastclick from 'fastclick'
 fastclick.attach(document.body)
 
 // 引入全局样式
-import './common/stylus/index.styl'
+import './common/stylus/index'
 
-// 引入vant
-import {Swipe,SwipeItem} from 'vant'
+import {Swipe,SwipeItem} from 'vant';
 import 'vant/lib/swipe/style'
 import 'vant/lib/swipe-item/style'
-
 Vue.use(Swipe)
 Vue.use(SwipeItem)
 
 new Vue({
-    router,
-    store,
-    render:h=>h(App)
-}).$mount("#app")
+  router,
+  store,
+  render: h=>h(App)
+}).$mount('#app')
